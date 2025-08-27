@@ -1,0 +1,15 @@
+# Visual Studio
+.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userprefs
+
+# Optional IDEs
+.idea/
+.vscode/
+
+# ASP.NET / EF
+**/App_Data/
+appsettings.*.local.json
