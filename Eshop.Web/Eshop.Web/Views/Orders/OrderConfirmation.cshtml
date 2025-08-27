@@ -1,0 +1,48 @@
+﻿@model Eshop.Contracts.DTOs.OrderDto
+
+@{
+    ViewData["Title"] = "Order Confirmation Cart";
+}
+
+<div class="alert alert-success mt-3">
+    ✅ <strong>Order placed successfully!</strong>
+</div>
+
+<h2>Order Summary</h2>
+
+<ul>
+    <li><strong>Order ID:</strong> @Model.Id</li>
+    <li><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</li>
+    <li><strong>Total Price:</strong> @Model.TotalPrice.ToString("F2") €</li>
+</ul>
+
+<h3>Items:</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice.ToString("F2") €</td>
+                <td>@((item.UnitPrice * item.Quantity).ToString("F2"))</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+            <td>@Model.TotalPrice.ToString("F2") €</td>
+        </tr>
+    </tfoot>
+</table>
+
+<a class="btn btn-primary" asp-controller="Products" asp-action="Index">⬅️ Continue Shopping</a>
