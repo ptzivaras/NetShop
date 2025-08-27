@@ -1,6 +1,6 @@
 ﻿namespace Eshop.Web.Controllers
 {
-    public class HomeController
+    public class CategoriesController
     {
     }
 }
