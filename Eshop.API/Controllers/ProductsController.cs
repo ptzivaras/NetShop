@@ -34,7 +34,7 @@ namespace Eshop.API.Controllers
 
             var totalCount = await query.CountAsync();
             query = query.OrderBy(p => p.Id);
-
+            //
             var items = await query
                 .Skip(pageSize * (page - 1))
                 .Take(pageSize)
