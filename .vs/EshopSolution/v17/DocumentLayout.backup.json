@@ -1,0 +1,258 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|solutionrelative:eshop.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|solutionrelative:eshop.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.api\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|solutionrelative:eshop.api\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.api\\controllers\\shoppingcartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|solutionrelative:eshop.api\\controllers\\shoppingcartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{118C6484-1F80-4D88-AF1E-9374690B06BD}|Eshop.Web\\Eshop.Web.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{118C6484-1F80-4D88-AF1E-9374690B06BD}|Eshop.Web\\Eshop.Web.csproj|solutionrelative:eshop.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.api\\eshop.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{E07BF86C-7AB2-45FA-B72D-7E572692D93A}|Eshop.API\\Eshop.API.csproj|solutionrelative:eshop.api\\eshop.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\models\\shoppingcart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\models\\shoppingcart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|e:\\1.codeprojects\\visualstudio2022_projects\\eshopsolution\\eshop.core\\data\\migrations\\20250724184402_addeshopschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8854BBE-7D3E-4773-9CC0-C2956A437B2E}|Eshop.Core\\Eshop.Core.csproj|solutionrelative:eshop.core\\data\\migrations\\20250724184402_addeshopschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ShoppingCartController.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\ShoppingCartController.cs",
+              "RelativeDocumentMoniker": "Eshop.API\\Controllers\\ShoppingCartController.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\ShoppingCartController.cs",
+              "RelativeToolTip": "Eshop.API\\Controllers\\ShoppingCartController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAswEAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T19:07:46.468Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "Eshop.API\\Controllers\\OrdersController.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "Eshop.API\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAswEAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T19:07:28.687Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CategoriesController.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\CategoriesController.cs",
+              "RelativeDocumentMoniker": "Eshop.API\\Controllers\\CategoriesController.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\CategoriesController.cs",
+              "RelativeToolTip": "Eshop.API\\Controllers\\CategoriesController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAswEYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T19:07:10.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "Eshop.API\\Controllers\\ProductsController.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "Eshop.API\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAADAAAAAAAAAAAAAswDkAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T19:06:55.698Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Web\\Program.cs",
+              "RelativeDocumentMoniker": "Eshop.Web\\Program.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Web\\Program.cs",
+              "RelativeToolTip": "Eshop.Web\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T19:04:20.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Eshop.API.csproj",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Eshop.API.csproj",
+              "RelativeDocumentMoniker": "Eshop.API\\Eshop.API.csproj",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.API\\Eshop.API.csproj",
+              "RelativeToolTip": "Eshop.API\\Eshop.API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-24T19:01:35.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Order.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Models\\Order.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\Order.cs",
+              "RelativeToolTip": "Eshop.Core\\Models\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:47:44.715Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ShoppingCart.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\ShoppingCart.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Models\\ShoppingCart.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\ShoppingCart.cs",
+              "RelativeToolTip": "Eshop.Core\\Models\\ShoppingCart.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:43:19.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Product.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Models\\Product.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\Product.cs",
+              "RelativeToolTip": "Eshop.Core\\Models\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:43:16.864Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\OrderItem.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Models\\OrderItem.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\OrderItem.cs",
+              "RelativeToolTip": "Eshop.Core\\Models\\OrderItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:43:13.057Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Category.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Models\\Category.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\Category.cs",
+              "RelativeToolTip": "Eshop.Core\\Models\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:43:03.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CartItem.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\CartItem.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Models\\CartItem.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Models\\CartItem.cs",
+              "RelativeToolTip": "Eshop.Core\\Models\\CartItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:43:00.574Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Eshop.Core\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:16:07.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "20250724184402_AddEshopSchema.cs",
+              "DocumentMoniker": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Data\\Migrations\\20250724184402_AddEshopSchema.cs",
+              "RelativeDocumentMoniker": "Eshop.Core\\Data\\Migrations\\20250724184402_AddEshopSchema.cs",
+              "ToolTip": "E:\\1.CodeProjects\\VisualStudio2022_Projects\\EshopSolution\\Eshop.Core\\Data\\Migrations\\20250724184402_AddEshopSchema.cs",
+              "RelativeToolTip": "Eshop.Core\\Data\\Migrations\\20250724184402_AddEshopSchema.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T18:44:03.016Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
