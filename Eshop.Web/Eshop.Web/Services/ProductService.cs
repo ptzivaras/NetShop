@@ -3,6 +3,7 @@ using RestSharp;
 using Eshop.Web.ViewModels;
 using Eshop.Contracts.DTOs;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Http; // add this as well
 
 namespace Eshop.Web.Services
 {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http; // add this
 
 namespace Eshop.Web.ViewModels
 {

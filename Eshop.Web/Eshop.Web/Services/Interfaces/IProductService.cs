@@ -1,4 +1,5 @@
 ﻿using Eshop.Web.ViewModels;
+using Microsoft.AspNetCore.Http; // add this
 
 namespace Eshop.Web.Services.Interfaces
 {
