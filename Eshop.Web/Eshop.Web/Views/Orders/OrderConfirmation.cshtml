@@ -1,7 +1,7 @@
 ﻿@model Eshop.Contracts.DTOs.OrderDto
 
 @{
-    ViewData["Title"] = "Order Confirmation Cart";
+    ViewData["Title"] = "Order Confirmation Orders";
 }
 
 <div class="alert alert-success mt-3">
@@ -13,7 +13,7 @@
 <ul>
     <li><strong>Order ID:</strong> @Model.Id</li>
     <li><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</li>
-    <li><strong>Total Price:</strong> @Model.TotalPrice.ToString("F2") €</li>
+    <li><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</li>
 </ul>
 
 <h3>Items:</h3>
@@ -32,17 +32,11 @@
             <tr>
                 <td>@item.ProductName</td>
                 <td>@item.Quantity</td>
-                <td>@item.UnitPrice.ToString("F2") €</td>
-                <td>@((item.UnitPrice * item.Quantity).ToString("F2"))</td>
+                <td>@item.UnitPrice.ToString("C")</td>
+                <td>@(item.UnitPrice * item.Quantity).ToString("C")</td>
             </tr>
         }
     </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3" class="text-end"><strong>Total:</strong></td>
-            <td>@Model.TotalPrice.ToString("F2") €</td>
-        </tr>
-    </tfoot>
 </table>
 
 <a class="btn btn-primary" asp-controller="Products" asp-action="Index">⬅️ Continue Shopping</a>

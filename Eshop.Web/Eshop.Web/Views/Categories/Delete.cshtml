@@ -1,0 +1,16 @@
+﻿@model Eshop.Web.ViewModels.CategoryViewModel
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<h2>Are you sure you want to delete this category?</h2>
+
+<div>
+    <h4>@Model.Name</h4>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

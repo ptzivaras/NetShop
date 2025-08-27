@@ -1,0 +1,99 @@
+﻿@model Eshop.Web.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "Your Profile";
+    var totalOrders = Model.TotalOrders;
+    var totalSpent = Model.Orders.Sum(o => o.TotalPrice);
+}
+
+<div class="mb-4">
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Total Orders:</strong> @totalOrders</p>
+    <p><strong>Total Spent:</strong> @totalSpent €</p>
+</div>
+
+<h3>Your Order History</h3>
+
+@if (!Model.Orders.Any())
+{
+    <p>You have not placed any orders yet.</p>
+}
+else
+{
+    <table class="table table-responsive table-hover align-middle mb-0 products-table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th class=" text-nowrap">Total (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td class="prod-info">@order.Id</td>
+                    <td class="prod-info">@order.OrderDate.ToShortDateString()</td>
+                    <td class="prod-info">@order.TotalPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex gap-2">
+        @if (Model.CurrentPage > 1)
+        {
+            <a class="btn btn-outline-secondary"
+               asp-action="Index"
+               asp-route-page="@(Model.CurrentPage - 1)">Previous</a>
+        }
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <a class="btn btn-outline-secondary"
+               asp-action="Index"
+               asp-route-page="@(Model.CurrentPage + 1)">Next</a>
+        }
+    </div>
+}
+
+@section Scripts {
+    <style>
+        td .btn {
+            line-height: 1.1;
+        }
+
+        .prod-thumb {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: .375rem;
+            flex-shrink: 0;
+        }
+
+        .prod-info {
+            max-width: 420px;
+            white-space: normal !important;
+        }
+
+        .table thead.table-light {
+            --bs-table-bg: #f6f9ff;
+        }
+
+            .table thead.table-light th {
+                background-color: #f6f9ff !important;
+            }
+
+        .table.table-bordered > :not(caption) > * > * {
+            border-color: #e6ebf3;
+        }
+
+        .table > :not(caption) > * > * {
+            border-bottom-color: #e6ebf3;
+        }
+
+        .products-table thead th {
+            background-color: #fff;
+            color: var(--bs-primary, #0d6efd);
+            font-weight: 600;
+        }
+    </style>
+}
