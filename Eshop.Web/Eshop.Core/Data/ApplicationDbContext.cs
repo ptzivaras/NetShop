@@ -1,5 +1,9 @@
 ﻿using Eshop.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Eshop.Core.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace Eshop.Core.Data
 {

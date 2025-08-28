@@ -7,8 +7,8 @@
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
         public List<OrderItemDto> Items { get; set; } = new();
-
         public string Message { get; set; } = string.Empty;// for confirmation order view
         public int OrderId { get; set; }
+
     }
 }

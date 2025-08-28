@@ -1,50 +1,125 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+<a asp-controller="Culture" asp-action="Set" asp-route-culture="en">English</a> |
+<a asp-controller="Culture" asp-action="Set" asp-route-culture="el">Ελληνικά</a>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Eshop.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Eshop.Web</title> <!-- Bootstrap CSS -->
+    <environment include="Development"> <!-- Adjust the path to match where LibMan placed Bootstrap. Common paths: ~/lib/bootstrap/dist/css/bootstrap.min.css OR ~/lib/bootstrap/css/bootstrap.min.css --> <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" /> </environment>
+    <environment exclude="Development"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" /> </environment> @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@ <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Eshop.Web.styles.css" asp-append-version="true" />
+    <style>
+        .navbar .nav-link {
+            position: relative;
+            transition: color 0.2s ease-in-out;
+        }
+
+            .navbar .nav-link:hover {
+                color: #0d6efd;
+            }
+
+            .navbar .nav-link::after {
+                content: "";
+                position: absolute;
+                width: 0%;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: #0d6efd;
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar .nav-link:hover::after {
+                width: 100%;
+            }
+
+            .navbar .nav-link.active {
+                font-weight: 600;
+                color: #0d6efd !important;
+            }
+
+                .navbar .nav-link.active::after {
+                    width: 100%;
+                }
+        /* Brand look */
+
+        .navbar .navbar-brand {
+            font-weight: 700;
+            letter-spacing: .3px;
+            text-transform: lowercase;
+        }
+        /* SVG mark colors that follow your Bootstrap theme */
+
+        .navbar .logo-bg {
+            fill: var(--bs-primary);
+        }
+
+        .navbar .logo-letter {
+            fill: #fff;
+            font-weight: 800;
+            font-size: 18px;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+        }
+        /* Subtle hover for the whole brand */
+
+        .navbar .navbar-brand {
+            transition: opacity .15s ease-in-out, transform .15s ease-in-out;
+        }
+
+            .navbar .navbar-brand:hover {
+                opacity: .9;
+                transform: translateY(-1px);
+                text-decoration: none;
+            }
+        /* Optional: match your underline style on brand too (keeps things consistent) */
+
+        .navbar .navbar-brand {
+            position: relative;
+        }
+
+            .navbar .navbar-brand::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -2px;
+                width: 0;
+                height: 2px;
+                background-color: var(--bs-primary);
+                transition: width .3s ease-in-out;
+            }
+
+            .navbar .navbar-brand:hover::after {
+                width: 100%;
+            }
+        /* If you use a dark navbar in the future, this keeps contrast good */
+
+        .navbar-dark .logo-bg {
+            fill: #fff;
+        }
+
+        .navbar-dark .logo-letter {
+            fill: var(--bs-dark);
+        }
+
+        body { /* background-color: #f6f9ff; */
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Eshop.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Eshop.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <header> <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> <div class="container-fluid"> @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">skroutz</a> *@ <a class="navbar-brand d-flex align-items-center gap-2" asp-area="" asp-controller="Home" asp-action="Index"> <!-- Logo mark --> <span class="logo-mark" aria-hidden="true"> <svg viewBox="0 0 32 32" width="28" height="28" role="img" focusable="false"> <!-- Background circle uses Bootstrap primary color --> <circle cx="16" cy="16" r="14" class="logo-bg"></circle> <!-- Simple “S” monogram --> <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-letter">S</text> </svg> </span> <!-- Wordmark --> <span class="logo-text">skroutz</span> </a> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> @{
+                        var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+                    } <ul class="navbar-nav flex-grow-1"> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Profile", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Profile" asp-action="Index">My Profile</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Products", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="products" asp-action="Index">All Products</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Cart", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Cart" asp-action="Index">🛒 Cart</a> </li> @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"> @await Component.InvokeAsync("AlertsBadge") </li>
+                        } </ul> <partial name="_LoginPartial" /> </div> </div> </nav> </header>
+    <div class="container"> <main role="main" class="pb-3"> @RenderBody() </main> </div>
+    <footer class="border-top footer text-muted"> <div class="container"> &copy; 2025 - www.skroutz.gr - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> </div> </footer> <!-- Bootstrap JS (bundle includes Popper). Load once, at end of body. -->
+    <environment include="Development"> <!-- Adjust the path to your local lib folder --> <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script> </environment>
+    <environment exclude="Development"> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> </environment> <!-- Toast container (bottom-right) -->
+    <div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index:1080"> <div id="addToCartToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true"> <div class="d-flex"> <div class="toast-body"> <strong id="toast-product-name">Product</strong> added to cart. </div> <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button> </div> </div> </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script> @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

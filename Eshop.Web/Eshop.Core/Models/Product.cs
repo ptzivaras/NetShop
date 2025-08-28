@@ -25,3 +25,11 @@ namespace Eshop.Core.Models
         public long? ImageSize { get; set; }
     }
 }
+
+//delete databse manuaslly
+//     Add-Migration InitialCreate -Project Eshop.Core
+//     Add-Migration IdentityInit -Project Eshop.Web
+//     Update-Database -Project Eshop.Core
+
+
+
