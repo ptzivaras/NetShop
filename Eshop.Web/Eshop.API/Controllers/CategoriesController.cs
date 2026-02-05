@@ -4,6 +4,7 @@ using Eshop.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Eshop.API.Controllers
 {
@@ -49,6 +50,7 @@ namespace Eshop.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryDto categoryDto)
         {
             var category = new Category
@@ -70,6 +72,7 @@ namespace Eshop.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCategory(int id, CategoryDto categoryDto)
         {
             if (id != categoryDto.Id)
@@ -87,6 +90,7 @@ namespace Eshop.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);

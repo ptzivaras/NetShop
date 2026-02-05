@@ -4,6 +4,7 @@ using Eshop.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Eshop.Core.Data;
 using Eshop.Contracts.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Eshop.API.Controllers
 {
@@ -75,6 +76,7 @@ namespace Eshop.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Product>> CreateProduct(Product product)
         {
             _context.Products.Add(product);
@@ -84,6 +86,7 @@ namespace Eshop.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProduct(int id, Product product)
         {
             if (id != product.Id)
@@ -107,6 +110,7 @@ namespace Eshop.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
@@ -143,6 +147,7 @@ namespace Eshop.API.Controllers
 
         [HttpPost("{id}/image")]
         [RequestSizeLimit(10_000_000)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UploadImage(int id, IFormFile file)
         {
             var product = await _context.Products.FindAsync(id);
