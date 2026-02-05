@@ -9,9 +9,11 @@ namespace Eshop.Web.Services
     {
         private readonly RestClient _client;
 
-        public CategoryService()
+        public CategoryService(IConfiguration configuration)
         {
-            _client = new RestClient("https://localhost:7068/api");
+            var apiBaseUrl = configuration["ApiSettings:BaseUrl"] 
+                ?? throw new InvalidOperationException("API BaseUrl not configured in appsettings.json");
+            _client = new RestClient(apiBaseUrl);
         }
 
         public async Task<List<CategoryViewModel>> GetAllCategoriesAsync()

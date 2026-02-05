@@ -13,11 +13,13 @@ namespace Eshop.Web.Services
         private readonly IMemoryCache _cache;
         private readonly ILogger<ProductService> _logger;
 
-        public ProductService(IMemoryCache cache, ILogger<ProductService> logger)
+        public ProductService(IConfiguration configuration, IMemoryCache cache, ILogger<ProductService> logger)
         {
             _cache = cache;
             _logger = logger;
-            _client = new RestClient("https://localhost:7068/api");
+            var apiBaseUrl = configuration["ApiSettings:BaseUrl"] 
+                ?? throw new InvalidOperationException("API BaseUrl not configured in appsettings.json");
+            _client = new RestClient(apiBaseUrl);
         }
 
         public async Task<ProductsListViewModel> GetProductsPagedAsync(

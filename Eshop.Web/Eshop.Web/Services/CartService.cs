@@ -10,9 +10,11 @@ namespace Eshop.Web.Services
     {
         private readonly RestClient _client;
 
-        public CartService()
+        public CartService(IConfiguration configuration)
         {
-            _client = new RestClient("https://localhost:7068/api");
+            var apiBaseUrl = configuration["ApiSettings:BaseUrl"] 
+                ?? throw new InvalidOperationException("API BaseUrl not configured in appsettings.json");
+            _client = new RestClient(apiBaseUrl);
         }
 
         public async Task<ShoppingCartViewModel> GetCartByUserIdAsync(string userId)
