@@ -49,28 +49,104 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - Product cards with images, titles, descriptions, pricing
 - Toast notifications for user actions
 - Role-based UI elements (Admin sees Edit/Delete, Customers see Add to Cart)
+- Pagination with page size control
+- Search and filter functionality
+- Image upload with preview (JPEG format for optimal storage)
 
-### 🔒 Security Features
-- **API Authorization** - All write operations (POST/PUT/DELETE) protected with `[Authorize]` attributes
-- **Role-based Access Control** - Admin-only endpoints for product/category management
-- **CORS Protection** - API restricted to trusted origins only (Web UI at localhost:7071)
-- **Identity Framework** - Secure password hashing, token management, and authentication flows
+### 🔒 Security & Performance Features
+
+**Authentication & Authorization:**
+- **ASP.NET Identity + Cookies** - Session-based authentication on Web layer with persistent login cookies
+  - Why cookies? Traditional MVC app with server-side rendering - cookies are simpler than JWT for browser-to-server auth
+  - Secure password hashing via Identity framework (PBKDF2)
+  - Role-based access control (Admin/Customer roles)
+  - Session persistence across requests without token management complexity
+
+**API Security:**
+- **Rate Limiting** ✅ - Global rate limiter: 100 requests/minute per user/IP to prevent DDoS attacks
+  - Built-in ASP.NET Core 8 `AddRateLimiter()` middleware
+  - Custom rejection messages for throttled requests
+- **IDOR Vulnerability Fixed** ✅ - Authorization checks on user-scoped endpoints (OrdersController, ShoppingCartController)
+  - Validates `currentUserId == userId` or `User.IsInRole("Admin")` before data access
+  - Prevents unauthorized access to other users' orders/carts
+- **Admin-Only Endpoints** ✅ - Write operations protected with `[Authorize(Roles = "Admin")]`
+  - Products: Create, Update, Delete, Image Upload
+  - Categories: Create, Update, Delete
+  - Stock Alerts: All admin dashboard operations
+- **CORS Configuration** ✅ - API restricted to trusted Web origin (`https://localhost:5161`, `http://localhost:5161`)
+  - Fixed from incorrect port 7071 → correct 5161
+  - Configured with `AllowCredentials` for cookie support
+- **No Hardcoded URLs** ✅ - All service API URLs configured via `appsettings.json:ApiSettings:BaseUrl`
+  - Environment-specific configurations (Development, Staging, Production)
+  - Easy deployment without code changes
+
+**Performance Optimizations:**
+- **Database Indexes** - Foreign key indexes on Products.CategoryId, OrderItems.OrderId/ProductId, CartItems relationships
+- **Caching** - `IMemoryCache` caches frequently accessed product listings (reduces DB round-trips)
+- **Pagination** - All list endpoints support `page` and `pageSize` parameters (default: 11 items/page)
+- **Transactions** - `TransactionScope` ensures atomic operations in order creation (cart → order → stock update)
+- **Image Storage** - JPEG format for smaller file sizes (byte[] stored in SQL Server, avoids filesystem complexity)
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **ASP.NET Core 8**  
-- **Entity Framework Core 8**  
-- **SQL Server**  
-- **ASP.NET Identity**  
-- **Bootstrap 5**  
-- **JavaScript / Fetch API**  
+**Backend:**
+- **ASP.NET Core 8.0** - Web API + MVC Framework
+- **Entity Framework Core 8.0** - ORM with Code-First migrations
+- **SQL Server LocalDB** - Development database
+- **ASP.NET Identity** - Authentication and authorization
+- **RestSharp** - HTTP client for API consumption
+- **Rate Limiting** - Built-in ASP.NET Core rate limiting middleware
+
+**Frontend:**
+- **Razor Views** - Server-side rendering
+- **Bootstrap 5** - Responsive UI framework
+- **JavaScript / Fetch API** - AJAX operations
+- **ViewComponents** - Reusable UI components
+
+**Architecture:**
+- **3-Layer Architecture** - Core (Domain), API (REST), Web (MVC), Contracts (DTOs)
+- **Dependency Injection** - Built-in ASP.NET Core DI container
+- **Configuration Management** - appsettings.json for environment-specific settings
+- **Caching** - IMemoryCache for performance optimization
+- **Transactions** - TransactionScope for data consistency  
 - **RestSharp + Newtonsoft.Json** (API consumption in MVC layer)  
 
 ---
 
-## ⚙️ Architecture
+## 🔐 Recent Security & Architecture Improvements
+
+### Security Fixes (February 2026)
+- ✅ **IDOR Vulnerability Fixed** - Added authorization checks to `OrdersController.GetOrdersByUser` and `ShoppingCartController.GetCartByUser` to prevent unauthorized access to other users' data
+- ✅ **Rate Limiting Implemented** - Global API rate limiter (100 requests/minute per user) protects against DDoS attacks
+- ✅ **CORS Misconfiguration Fixed** - Updated allowed origin from port 7071 to correct Web app port 5161
+- ✅ **Hardcoded URLs Eliminated** - All service classes now use `IConfiguration` to read API base URL from `appsettings.json`
+- ✅ **Admin Authorization Added** - All administrative endpoints (Create/Update/Delete for Products/Categories) now require Admin role
+
+### Performance Improvements
+- ✅ **Database Indexing** - Added foreign key indexes on Products, Orders, CartItems tables
+- ✅ **Memory Caching** - Implemented `IMemoryCache` for frequently accessed product data
+- ✅ **Query Optimization** - Used `AsNoTracking()` for read-only operations
+- ✅ **Pagination** - Implemented server-side pagination for Products (default 11 items per page)
+
+### Architecture Enhancements
+- ✅ **Configuration-Based Services** - All services inject `IConfiguration` for flexible URL management
+- ✅ **Transaction Management** - Order creation uses `TransactionScope` to ensure data consistency
+- ✅ **Separation of Concerns** - Two separate DbContexts (ApplicationDbContext for business, AppIdentityDbContext for auth)
+- ✅ **Stock Alerts System** - Complete API and UI implementation for low inventory notifications
+
+### ⚠️ Known Limitations
+- **API Authentication Not Fully Configured** - API has `[Authorize]` attributes but lacks JWT/Bearer token authentication scheme. Currently relies on manual `userId` validation.
+- **No Unit/Integration Tests** - Test coverage is 0% (planned for future implementation)
+- **No Repository Pattern** - Controllers directly inject DbContext (refactoring planned)
+- **Business Logic in Controllers** - OrdersController.CreateOrder contains 67 lines of business logic (should move to service layer)
+
+📚 **For detailed security analysis, see:** [SECURITY_IMPROVEMENTS.md](SECURITY_IMPROVEMENTS.md)
+
+---
+
+## 🗄️ Database Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -291,11 +367,13 @@ dotnet ef database update `
 📚 **For configuration details, see:** [`/docs/SECURITY_CONFIG.md`](docs/SECURITY_CONFIG.md📋 Roadmap & Future Features
 
 ### 🔜 In Progress / Planned
-- [ ] **Stock Alerts System** - Low inventory notifications for admins (entity ready, UI pending)
+- [ ] **API Versioning** - Versioned API endpoints (v1, v2) for backward compatibility
 - [ ] **Payment Integration** - Stripe payment gateway for checkout
 - [ ] **Language Switcher UI** - Dropdown in navbar for EN/EL selection
 - [ ] **Product Search** - Advanced search with filters (price range, category, stock status)
 - [ ] **Product Reviews** - Customer ratings and reviews
+- [ ] **Repository Pattern** - Refactor from direct DbContext to Repository abstraction layer
+- [ ] **JWT Authentication for API** - Replace cookie auth with stateless JWT tokens for API layer
 
 ### 🧪 Testing & Quality
 - [ ] Unit tests with xUnit
@@ -315,6 +393,32 @@ Detailed documentation available in [`/docs`](docs/):
 - [Database Architecture](docs/DATABASE_ARCHITECTURE.md) - In-depth explanation of two DbContext design
 - [Migrations Guide](docs/MIGRATIONS_GUIDE.md) - Complete guide for database migrations
 - [Security Configuration](docs/SECURITY_CONFIG.md) - Best practices for secrets management
+- [Security Improvements Plan](SECURITY_IMPROVEMENTS.md) - Comprehensive security audit and improvement roadmap
+
+---
+
+## 📝 Recent Changes & Commit History
+
+### Latest Commits (February 2026)
+```bash
+fffe5a8 docs: Update documentation and improve .gitignore
+9102f66 chore(migrations): Add initial database migrations
+ae18539 feat(views): Add complete Products CRUD views
+d5dfda6 feat(stockalerts): Add StockAlerts API and ViewComponent
+86a26fb feat(viewmodels): Add missing properties to Product ViewModels
+d55ed7d chore: Fix configuration and cleanup code
+a8f37dc feat(api): Add role-based authorization to admin endpoints
+f4844ec refactor(services): Replace hardcoded API URLs with configuration
+cc1a463 feat(api): Add rate limiting and fix CORS configuration
+720494a fix(security): Add authorization checks to prevent IDOR vulnerabilities
+```
+
+**Key Improvements:**
+- ✅ **Security Fixes** - IDOR vulnerability patched, rate limiting enabled, CORS configured
+- ✅ **Configuration** - Removed hardcoded URLs, externalized to appsettings.json
+- ✅ **Authorization** - Admin-only endpoints protected with role-based access control
+- ✅ **Features** - StockAlerts system (API + ViewComponent), complete Products views
+- ✅ **Infrastructure** - Database migrations, ViewModels extended, documentation updated
 
 ---
 
