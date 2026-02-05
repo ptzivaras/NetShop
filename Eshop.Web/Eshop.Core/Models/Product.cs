@@ -26,10 +26,5 @@ namespace Eshop.Core.Models
     }
 }
 
-//delete databse manuaslly
-//     Add-Migration InitialCreate -Project Eshop.Core
-//     Add-Migration IdentityInit -Project Eshop.Web
-//     Update-Database -Project Eshop.Core
-
 
 
