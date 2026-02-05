@@ -3,6 +3,8 @@ using Eshop.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Eshop.Contracts.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Eshop.API.Controllers
 {
@@ -41,8 +43,18 @@ namespace Eshop.API.Controllers
         }
 
         [HttpGet("user/{userId}")]
+        [Authorize]
         public async Task<ActionResult<ShoppingCartDto>> GetCartByUser(string userId)
         {
+            // Security: Verify that the requesting user is either the owner or an Admin
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole("Admin");
+            
+            if (currentUserId != userId && !isAdmin)
+            {
+                return Forbid(); // 403 Forbidden
+            }
+            
             var cart = await _context.ShoppingCarts
                 .Include(c => c.CartItems)
                 .ThenInclude(ci => ci.Product)

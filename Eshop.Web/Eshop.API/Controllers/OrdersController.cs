@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Eshop.API.Controllers
 {
@@ -46,8 +47,18 @@ namespace Eshop.API.Controllers
         }
 
         [HttpGet("user/{userId}")]
+        [Authorize]
         public async Task<ActionResult<List<OrderDto>>> GetOrdersByUser(string userId, int page = 1, int pageSize = 10)
         {
+            // Security: Verify that the requesting user is either the owner or an Admin
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole("Admin");
+            
+            if (currentUserId != userId && !isAdmin)
+            {
+                return Forbid(); // 403 Forbidden
+            }
+            
             var query = _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
@@ -114,6 +125,7 @@ namespace Eshop.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CreateOrder([FromBody] PlaceOrderRequestDto requestDto)
         {
             if (requestDto is null || string.IsNullOrWhiteSpace(requestDto.UserId))
