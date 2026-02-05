@@ -4,6 +4,7 @@
     {
         public List<ProductViewModel> Items { get; set; } = new();
         public int Page { get; set; }
+        public int CurrentPage => Page; // Alias for compatibility
         public int PageSize { get; set; }
         public int TotalPages { get; set; }
         public int TotalCount { get; set; }

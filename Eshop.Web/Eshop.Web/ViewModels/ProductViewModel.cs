@@ -26,7 +26,13 @@ namespace Eshop.Web.ViewModels
 
         public int InCartQuantity { get; set; }
 
+        [Range(0, 100)]
+        public int LowStockThreshold { get; set; } = 10;
+
         public IFormFile? ImageFile { get; set; }
-        public bool HasImage => ImageFile != null;
+        public string? ImagePath { get; set; }
+        public byte[]? ImageBytes { get; set; }
+        public string? ImageContentType { get; set; }
+        public bool HasImage => ImageFile != null || ImageBytes != null || !string.IsNullOrEmpty(ImagePath);
     }
 }
