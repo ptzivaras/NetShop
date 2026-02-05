@@ -361,3 +361,24 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+##
+## Custom Project Ignores
+##
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+appsettings.Development.json
+appsettings.Production.json
+
+# Design/mockup files
+Figma_Delete/
+
+# Documentation (not committed - private reference)
+docs/
+
+# IDE specific
+.vscode/
+.idea/
