@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.RateLimiting;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Eshop.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Add Global Exception Handler (should be first middleware)
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
