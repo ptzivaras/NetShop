@@ -73,6 +73,10 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 
 
 **API Security:**
+- **HTTPS/TLS Encryption** ✅ - All communication encrypted with HTTPS to protect sensitive data
+  - Cookie-based authentication requires HTTPS (Secure flag prevents cookie theft)
+  - Prevents Man-in-the-Middle attacks on login credentials and session cookies
+  - Development: Uses self-signed certificates (localhost:7068 API, localhost:7252 Web)
 - **Rate Limiting** ✅ - Global rate limiter: 100 requests/minute per user/IP to prevent DDoS attacks
   - Built-in ASP.NET Core 8 `AddRateLimiter()` middleware
   - Custom rejection messages for throttled requests
