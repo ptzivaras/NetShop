@@ -26,7 +26,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 ### 🛒 Shopping Cart
 - Add/Remove/Update product quantities
 - Persistent cart per authenticated user
-- AJAX add-to-cart with instant UI feedback
+- Add to cart functionality (form POST)
 - Seamless checkout integration
 
 ### 📑 Orders
@@ -154,7 +154,6 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 **Frontend:**
 - **Razor Views** - Server-side rendering
 - **Bootstrap 5** - Responsive UI framework
-- **JavaScript / Fetch API** - AJAX operations
 - **ViewComponents** - Reusable UI components
 
 **Architecture:**
@@ -284,9 +283,13 @@ This project uses **two isolated database contexts** for different concerns:
   - Future: If React/mobile apps needed, implement JWT tokens
 
 #### 📦 Features (Future)
+- [ ] **AJAX Cart Updates** - Add to cart without page reload (JavaScript + Fetch API)
+- [ ] **Product Wishlist** - Save favorite products for later
 - [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
 - [ ] **Product Search** - Advanced filters (price range, category, stock status)
 - [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
+- [ ] **UI Animations** - Dynamic transitions and animations for better UX
+- [ ] **User Guide** - End-user documentation (how to use the shop)
 
 #### 🧪 Testing & Quality (Future)
 - [ ] **Integration Tests** - Fix authentication configuration in TestWebApplicationFactory
