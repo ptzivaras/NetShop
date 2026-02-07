@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Eshop.API.Services
 {
@@ -90,7 +91,14 @@ namespace Eshop.API.Services
                 foreach (var item in cart.CartItems)
                 {
                     item.Product!.StockQuantity -= item.Quantity;
-                    await _productRepository.UpdateAsync(item.Product);
+                    try
+                    {
+                        await _productRepository.UpdateAsync(item.Product);
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        return (false, $"Product '{item.Product.Name}' was updated by another user. Please try again.", null);
+                    }
                 }
 
                 // Create order
