@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Eshop.Core.Models;
-using Microsoft.EntityFrameworkCore;
-using Eshop.Core.Data;
 using Eshop.Contracts.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Eshop.API.Services;
 
 namespace Eshop.API.Controllers
 {
@@ -12,11 +10,11 @@ namespace Eshop.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IProductService _productService;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -27,84 +25,38 @@ namespace Eshop.API.Controllers
             [FromQuery] int? categoryId = null
         )
         {
-            if (page <= 0) page = 1;
-            if (pageSize <= 0 || pageSize > 100) pageSize = 11;
-
-            var query = _context.Products.AsNoTracking();
-            if (!string.IsNullOrWhiteSpace(q))
-                query = query.Where(p => p.Name.Contains(q) || p.Description.Contains(q));
-            if (categoryId.HasValue)
-                query = query.Where(p => p.CategoryId == categoryId.Value);
-
-            var totalCount = await query.CountAsync();
-            query = query.OrderBy(p => p.Id);
-
-            var items = await query
-                .Skip(pageSize * (page - 1))
-                .Take(pageSize)
-                .Select(c => new ProductDto
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Description = c.Description,
-                    Price = c.Price,
-                    StockQuantity = c.StockQuantity,
-                    CategoryId = c.CategoryId,
-                    CategoryName = c.Category != null ? c.Category.Name : null
-                }).ToListAsync();
-
-            var result = new PagedResult<ProductDto>
-            {
-                Items = items,
-                Page = page,
-                PageSize = pageSize,
-                TotalCount = totalCount,
-                TotalPages = (int)Math.Ceiling((double)totalCount / pageSize)
-            };
+            var result = await _productService.GetProductsAsync(page, pageSize, q, categoryId);
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-
+            var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
                 return NotFound();
 
-            return product;
+            return Ok(product);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Product>> CreateProduct(Product product)
+        public async Task<ActionResult<ProductDto>> CreateProduct(ProductDto productDto)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            var createdProduct = await _productService.CreateProductAsync(productDto);
+            return CreatedAtAction(nameof(GetProduct), new { id = createdProduct.Id }, createdProduct);
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProduct(int id, Product product)
+        public async Task<IActionResult> UpdateProduct(int id, ProductDto productDto)
         {
-            if (id != product.Id)
+            if (id != productDto.Id)
                 return BadRequest();
 
-            _context.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                    return NotFound();
-                else
-                    throw;
-            }
+            var success = await _productService.UpdateProductAsync(id, productDto);
+            if (!success)
+                return NotFound();
 
             return NoContent();
         }
@@ -113,36 +65,21 @@ namespace Eshop.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            try
-            {
-                var product = await _context.Products.FindAsync(id);
+            var success = await _productService.DeleteProductAsync(id);
+            if (!success)
+                return NotFound();
 
-                if (product == null)
-                    return NotFound();
-
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return Conflict("The product may have already been deleted by another user.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Unexpected error: {ex.Message}");
-            }
+            return NoContent();
         }
 
         [HttpGet("{id}/image")]
         public async Task<IActionResult> GetImage(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null || product.ImageBytes == null || string.IsNullOrEmpty(product.ImageContentType))
+            var imageData = await _productService.GetProductImageAsync(id);
+            if (imageData == null)
                 return NotFound();
 
-            return File(product.ImageBytes, product.ImageContentType);
+            return File(imageData.Value.ImageBytes, imageData.Value.ContentType);
         }
 
         [HttpPost("{id}/image")]
@@ -150,9 +87,6 @@ namespace Eshop.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UploadImage(int id, IFormFile file)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return NotFound();
-
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
@@ -161,18 +95,12 @@ namespace Eshop.API.Controllers
 
             using var ms = new MemoryStream();
             await file.CopyToAsync(ms);
-            product.ImageBytes = ms.ToArray();
-            product.ImageContentType = file.ContentType;
-            product.ImageFileName = file.FileName;
-            product.ImageSize = file.Length;
 
-            await _context.SaveChangesAsync();
+            var success = await _productService.UpdateProductImageAsync(id, ms.ToArray(), file.ContentType, file.FileName, file.Length);
+            if (!success)
+                return NotFound();
+
             return NoContent();
-        }
-
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

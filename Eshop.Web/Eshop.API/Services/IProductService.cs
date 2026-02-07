@@ -8,8 +8,10 @@ namespace Eshop.API.Services
     {
         Task<PagedResult<ProductDto>> GetProductsAsync(int page, int pageSize, string? searchTerm, int? categoryId);
         Task<ProductDto?> GetProductByIdAsync(int id);
-        Task<Product> CreateProductAsync(Product product);
-        Task<bool> UpdateProductAsync(int id, Product product);
+        Task<ProductDto> CreateProductAsync(ProductDto productDto);
+        Task<bool> UpdateProductAsync(int id, ProductDto productDto);
         Task<bool> DeleteProductAsync(int id);
+        Task<(byte[] ImageBytes, string ContentType)?> GetProductImageAsync(int id);
+        Task<bool> UpdateProductImageAsync(int id, byte[] imageBytes, string contentType, string fileName, long fileSize);
     }
 }

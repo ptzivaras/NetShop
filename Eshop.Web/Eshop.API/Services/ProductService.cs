@@ -59,23 +59,33 @@ namespace Eshop.API.Services
             };
         }
 
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<ProductDto> CreateProductAsync(ProductDto productDto)
         {
-            return await _productRepository.AddAsync(product);
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                StockQuantity = productDto.StockQuantity,
+                CategoryId = productDto.CategoryId
+            };
+
+            var created = await _productRepository.AddAsync(product);
+            productDto.Id = created.Id;
+            return productDto;
         }
 
-        public async Task<bool> UpdateProductAsync(int id, Product product)
+        public async Task<bool> UpdateProductAsync(int id, ProductDto productDto)
         {
             var existingProduct = await _productRepository.GetByIdAsync(id);
             if (existingProduct == null)
                 return false;
 
-            existingProduct.Name = product.Name;
-            existingProduct.Description = product.Description;
-            existingProduct.Price = product.Price;
-            existingProduct.StockQuantity = product.StockQuantity;
-            existingProduct.CategoryId = product.CategoryId;
-            existingProduct.ImageBytes = product.ImageBytes;
+            existingProduct.Name = productDto.Name;
+            existingProduct.Description = productDto.Description;
+            existingProduct.Price = productDto.Price;
+            existingProduct.StockQuantity = productDto.StockQuantity;
+            existingProduct.CategoryId = productDto.CategoryId;
 
             await _productRepository.UpdateAsync(existingProduct);
             return true;
@@ -88,6 +98,30 @@ namespace Eshop.API.Services
                 return false;
 
             await _productRepository.DeleteAsync(product);
+            return true;
+        }
+
+        public async Task<(byte[] ImageBytes, string ContentType)?> GetProductImageAsync(int id)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null || product.ImageBytes == null || string.IsNullOrEmpty(product.ImageContentType))
+                return null;
+
+            return (product.ImageBytes, product.ImageContentType);
+        }
+
+        public async Task<bool> UpdateProductImageAsync(int id, byte[] imageBytes, string contentType, string fileName, long fileSize)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+                return false;
+
+            product.ImageBytes = imageBytes;
+            product.ImageContentType = contentType;
+            product.ImageFileName = fileName;
+            product.ImageSize = fileSize;
+
+            await _productRepository.UpdateAsync(product);
             return true;
         }
     }
