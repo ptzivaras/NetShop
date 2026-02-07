@@ -1,7 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<a asp-controller="Culture" asp-action="Set" asp-route-culture="en">English</a> |
-<a asp-controller="Culture" asp-action="Set" asp-route-culture="el">Ελληνικά</a>
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization
+@using Eshop.Web.Resources
+@inject IStringLocalizer<SharedResources> Localizer
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -109,10 +111,47 @@
 <body>
     <header> <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> <div class="container-fluid"> @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">skroutz</a> *@ <a class="navbar-brand d-flex align-items-center gap-2" asp-area="" asp-controller="Home" asp-action="Index"> <!-- Logo mark --> <span class="logo-mark" aria-hidden="true"> <svg viewBox="0 0 32 32" width="28" height="28" role="img" focusable="false"> <!-- Background circle uses Bootstrap primary color --> <circle cx="16" cy="16" r="14" class="logo-bg"></circle> <!-- Simple “S” monogram --> <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-letter">S</text> </svg> </span> <!-- Wordmark --> <span class="logo-text">skroutz</span> </a> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> @{
                         var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-                    } <ul class="navbar-nav flex-grow-1"> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Profile", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Profile" asp-action="Index">My Profile</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Products", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="products" asp-action="Index">All Products</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Cart", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Cart" asp-action="Index">🛒 Cart</a> </li> @if (User.IsInRole("Admin"))
+                    } <ul class="navbar-nav flex-grow-1"> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Profile", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Profile" asp-action="Index">@Localizer["Profile"]</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Products", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="products" asp-action="Index">@Localizer["Products"]</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Cart", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Cart" asp-action="Index">🛒 @Localizer["Cart"]</a> </li> @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item"> @await Component.InvokeAsync("AlertsBadge") </li>
-                        } </ul> <partial name="_LoginPartial" /> </div> </div> </nav> </header>
+                        } 
+                    </ul> 
+                    
+                    @{
+                        var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+                        var currentCulture = requestCulture?.RequestCulture.Culture.TwoLetterISOLanguageName ?? "en";
+                        var returnUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+                    }
+                    
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                🌍 @(currentCulture == "el" ? "Ελληνικά" : "English")
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                <li>
+                                    <form asp-controller="Home" asp-action="SetLanguage" method="post" class="dropdown-item p-0">
+                                        <input type="hidden" name="culture" value="en" />
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <button type="submit" class="btn btn-link dropdown-item text-start w-100">🇬🇧 English</button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form asp-controller="Home" asp-action="SetLanguage" method="post" class="dropdown-item p-0">
+                                        <input type="hidden" name="culture" value="el" />
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <button type="submit" class="btn btn-link dropdown-item text-start w-100">🇬🇷 Ελληνικά</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <partial name="_LoginPartial" /> 
+                </div> 
+            </div> 
+        </nav> 
+    </header>
     <div class="container"> <main role="main" class="pb-3"> @RenderBody() </main> </div>
     <footer class="border-top footer text-muted"> <div class="container"> &copy; 2025 - www.skroutz.gr - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> </div> </footer> <!-- Bootstrap JS (bundle includes Popper). Load once, at end of body. -->
     <environment include="Development"> <!-- Adjust the path to your local lib folder --> <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script> </environment>
