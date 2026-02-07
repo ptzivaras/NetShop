@@ -251,15 +251,27 @@ This project uses **two isolated database contexts** for different concerns:
   - 5 services (CategoryService, ProductService, OrderService, ShoppingCartService, StockAlertService)
   - Controllers reduced by 332 lines (-42%)
   - OrderService handles 67-line transaction logic previously in controller
-- [x] **IDOR Temporary Fix** - Manual authorization checks on user-scoped endpoints
-  - Validates `currentUserId == userId || isAdmin` before data access
+- [x] **IDOR Permanent Fix** - Policy-based authorization with custom attributes
+  - Custom `[AuthorizeOwnerOrAdmin]` attribute replaces manual checks
+  - Route/query parameter validation via authorization handler
+  - Centralized authorization logic (OwnerOrAdminRequirement + Handler)
+  - Applied to: GetOrdersByUser, GetCartByUser endpoints
 
 #### 🚧 High Priority (Security & Core Functionality)
-- [ ] **IDOR Permanent Fix** - Custom authorization attributes with policy-based authorization
-  - Replace manual `if (currentUserId != userId)` checks with `[AuthorizeOwnerOrAdmin]` attribute
-  - Centralized authorization logic, reusable across controllers
 - [ ] **API Authentication** - JWT or Shared Cookies (for later if API consumed by mobile/SPA)
-  - Currently: Web MVC co (Future)
+  - Currently: Web MVC consumes API internally (works fine)
+  - Future: If React/mobile apps needed, implement JWT tokens
+
+#### 📦 Features (Future)
+- [ ] **API Versioning** - Versioned endpoints (v1, v2) for backward compatibility
+- [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
+- [ ] **Language Switcher** - UI dropdown in navbar for EN/EL language selection
+- [ ] **Product Search** - Advanced filters (price range, category, stock status)
+- [ ] **Product Reviews** - Customer ratings and review system
+- [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
+- [ ] **Concurrency Control** - Handle race conditions for limited stock (optimistic/pessimistic locking)
+
+#### 🧪 Testing & Quality (Future)
 - [ ] **Unit Tests** - xUnit project for service layer tests
   - Mock repositories with Moq for isolated unit tests
   - Test OrderService transaction logic, validation rules
@@ -272,19 +284,7 @@ This project uses **two isolated database contexts** for different concerns:
   - Docker Compose for local development with SQL Server container
 - [ ] **CI/CD Pipeline** - GitHub Actions workflow for automated build/test/deploy
 - [ ] **Azure Deployment** - App Service or Container Apps with managed SQL
-- [ ] **Monitoring & Logging** - Application Insights telemetry + Serilog structured logskground job)
-- [ ] **Concurrency Control** - Handle race conditions for limited stock (optimistic/pessimistic locking)
-
-#### 🧪 Testing & Quality
-- [ ] **Unit Tests** - xUnit tests for services and business logic
-- [ ] **Integration Tests** - TestServer for API endpoint testing
-- [ ] **Load Testing** - Performance benchmarks and stress testing
-
-#### 🚀 DevOps & Deployment
-- [ ] **Docker Containerization** - Dockerfile for API and Web projects
-- [ ] **CI/CD Pipeline** - GitHub Actions for automated build/test/deploy
-- [ ] **Azure Deployment** - App Service or Container Apps configuration
-- [ ] **Monitoring & Logging** - Application Insights / Serilog structured logging
+- [ ] **Monitoring & Logging** - Application Insights telemetry + Serilog structured logs
 
 ---
 
