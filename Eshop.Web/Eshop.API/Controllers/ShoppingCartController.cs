@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Eshop.API.Services;
 using Eshop.API.Authorization;
+using Asp.Versioning;
 
 namespace Eshop.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class ShoppingCartController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

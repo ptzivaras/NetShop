@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Eshop.Contracts.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Eshop.API.Services;
+using Asp.Versioning;
 
 namespace Eshop.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;

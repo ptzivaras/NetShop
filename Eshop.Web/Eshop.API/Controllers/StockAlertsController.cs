@@ -2,11 +2,13 @@ using Eshop.Contracts.DTOs;
 using Eshop.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace Eshop.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     [Authorize(Roles = "Admin")]
     public class StockAlertsController : ControllerBase
     {

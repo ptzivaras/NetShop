@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Eshop.API.Services;
 using Eshop.API.Authorization;
+using Asp.Versioning;
 
 namespace Eshop.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
