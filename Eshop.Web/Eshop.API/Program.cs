@@ -102,10 +102,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+// Skip database seeding in Testing environment (for integration tests with in-memory DB)
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    DbInitializer.Seed(context);
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        DbInitializer.Seed(context);
+    }
 }
 
 app.Run();

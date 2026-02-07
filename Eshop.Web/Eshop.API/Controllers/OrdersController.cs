@@ -56,7 +56,6 @@ namespace Eshop.API.Controllers
             if (requestDto is null || string.IsNullOrWhiteSpace(requestDto.UserId))
                 return BadRequest("Invalid request.");
 
-            // IDOR Protection: Verify requesting user is owner or Admin
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
             

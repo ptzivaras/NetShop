@@ -66,7 +66,6 @@ namespace Eshop.API.Controllers
             if (request.ProductId <= 0)
                 return BadRequest("Valid ProductId is required.");
 
-            // IDOR Protection
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
             
@@ -112,7 +111,6 @@ namespace Eshop.API.Controllers
             if (req is null || string.IsNullOrWhiteSpace(req.UserId))
                 return BadRequest("UserId is required.");
 
-            // IDOR Protection
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
             
