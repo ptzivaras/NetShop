@@ -6,6 +6,7 @@ using Eshop.Contracts.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Eshop.API.Services;
+using Eshop.API.Authorization;
 
 namespace Eshop.API.Controllers
 {
@@ -46,18 +47,9 @@ namespace Eshop.API.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize]
+        [AuthorizeOwnerOrAdmin("userId")]
         public async Task<ActionResult<ShoppingCartDto>> GetCartByUser(string userId)
         {
-            // IDOR Protection: Verify requesting user is owner or Admin
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var isAdmin = User.IsInRole("Admin");
-            
-            if (currentUserId != userId && !isAdmin)
-            {
-                return Forbid();
-            }
-            
             var cart = await _shoppingCartService.GetCartByUserIdAsync(userId);
             if (cart == null)
                 return NotFound();

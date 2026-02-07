@@ -100,11 +100,16 @@ A full-stack **E-commerce Web Application** built with modern technologies:
   - Returns sanitized error messages to clients (no stack traces or internal details)
   - Logs full exception details server-side for debugging
   - Protects against information leakage attacks
-- **Repository Pattern** 🔄 (Planned) - Abstraction layer between controllers and database
+- **Repository Pattern** ✅ - Abstraction layer between controllers and database
+  - Generic `IRepository<T>` base with CRUD operations
+  - 5 domain-specific repositories: Product, Category, Order, ShoppingCart, StockAlert
   - Improves testability with mockable data access
-  - Enhances security by preventing direct DbContext access in controllers
   - Centralizes data access logic for easier security audits
-  - Enables consistent validation and authorization policies
+- **Service Layer** ✅ - Business logic extracted from controllers to service classes
+  - 5 services with clear single responsibilities
+  - OrderService handles complex transaction logic (cart → order → stock update)
+  - Controllers reduced by 42% (793 → 461 lines)
+  - Clean architecture: Controller → Service → Repository → DbContext
 
 **Performance Optimizations:**
 - **Database Indexes** - Foreign key indexes on Products.CategoryId, OrderItems.OrderId/ProductId, CartItems relationships
@@ -233,25 +238,41 @@ This project uses **two isolated database contexts** for different concerns:
 ### TODO 🔜 
 
 #### ✅ Completed
-- [x] **Input Validation** - FluentValidation for DTOs (ProductDto, CategoryDto, OrderDto)
+- [x] **Input Validation** - FluentValidation for DTOs (ProductDto, CategoryDto, PlaceOrderRequestDto)
+  - 3 validators with custom rules, integrated with ASP.NET Core model binding
 - [x] **Error Handling** - Global exception middleware to prevent sensitive data exposure
+  - Sanitized error messages, server-side logging, no stack traces to clients
 - [x] **HTTPS/TLS** - All communication encrypted, cookies protected with Secure flag
+  - API: https://localhost:7068, Web: https://localhost:7252
+- [x] **Repository Pattern** - Abstraction layer between controllers and database
+  - Generic base + 5 domain repositories (12 files total)
+  - All controllers refactored to use repositories via services
+- [x] **Service Layer** - Business logic extracted from controllers
+  - 5 services (CategoryService, ProductService, OrderService, ShoppingCartService, StockAlertService)
+  - Controllers reduced by 332 lines (-42%)
+  - OrderService handles 67-line transaction logic previously in controller
+- [x] **IDOR Temporary Fix** - Manual authorization checks on user-scoped endpoints
+  - Validates `currentUserId == userId || isAdmin` before data access
 
 #### 🚧 High Priority (Security & Core Functionality)
-- [ ] **API Authentication** - JWT or Shared Cookies (Critical! API [Authorize] attributes not enforced)
-  - **Choice 1:** Shared cookie authentication between Web and API
-  - **Choice 2:** JWT tokens for stateless API authentication
-- [ ] **Repository Pattern** - Refactor controllers to use Repository abstraction layer (improves testability, security, maintainability)
-- [ ] **Service Layer** - Move business logic from controllers to service classes (67 lines in OrdersController.CreateOrder)
-- [ ] **IDOR Permanent Fix** - Replace manual userId validation with proper authorization policies
+- [ ] **IDOR Permanent Fix** - Custom authorization attributes with policy-based authorization
+  - Replace manual `if (currentUserId != userId)` checks with `[AuthorizeOwnerOrAdmin]` attribute
+  - Centralized authorization logic, reusable across controllers
+- [ ] **API Authentication** - JWT or Shared Cookies (for later if API consumed by mobile/SPA)
+  - Currently: Web MVC co (Future)
+- [ ] **Unit Tests** - xUnit project for service layer tests
+  - Mock repositories with Moq for isolated unit tests
+  - Test OrderService transaction logic, validation rules
+- [ ] **Integration Tests** - TestServer for API endpoint tests
+  - Test full request/response cycle with in-memory database
+- [ ] **Load Testing** - k6 or Apache JMeter for performance benchmarks
 
-#### 📦 Features
-- [ ] **API Versioning** - Versioned endpoints (v1, v2) for backward compatibility
-- [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
-- [ ] **Language Switcher** - UI dropdown in navbar for EN/EL language selection
-- [ ] **Product Search** - Advanced filters (price range, category, stock status)
-- [ ] **Product Reviews** - Customer ratings and review system
-- [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
+#### 🚀 DevOps & Deployment (Future - Keep for end)
+- [ ] **Docker Containerization** - Multi-stage Dockerfiles for API and Web
+  - Docker Compose for local development with SQL Server container
+- [ ] **CI/CD Pipeline** - GitHub Actions workflow for automated build/test/deploy
+- [ ] **Azure Deployment** - App Service or Container Apps with managed SQL
+- [ ] **Monitoring & Logging** - Application Insights telemetry + Serilog structured logskground job)
 - [ ] **Concurrency Control** - Handle race conditions for limited stock (optimistic/pessimistic locking)
 
 #### 🧪 Testing & Quality

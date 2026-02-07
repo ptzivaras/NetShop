@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Eshop.API.Services;
+using Eshop.API.Authorization;
 
 namespace Eshop.API.Controllers
 {
@@ -26,18 +27,9 @@ namespace Eshop.API.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize]
+        [AuthorizeOwnerOrAdmin("userId")]
         public async Task<ActionResult<object>> GetOrdersByUser(string userId, int page = 1, int pageSize = 10)
         {
-            // IDOR Protection: Verify requesting user is owner or Admin
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var isAdmin = User.IsInRole("Admin");
-            
-            if (currentUserId != userId && !isAdmin)
-            {
-                return Forbid();
-            }
-            
             var (orders, totalOrders) = await _orderService.GetOrdersByUserIdAsync(userId, page, pageSize);
 
             return Ok(new

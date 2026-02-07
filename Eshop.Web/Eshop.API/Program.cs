@@ -6,6 +6,8 @@ using FluentValidation.AspNetCore;
 using Eshop.API.Middleware;
 using Eshop.Core.Repositories;
 using Eshop.API.Services;
+using Microsoft.AspNetCore.Authorization;
+using Eshop.API.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,19 @@ builder.Services.AddControllers();
 // Add FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+// Add HttpContextAccessor (required for IDOR protection)
+builder.Services.AddHttpContextAccessor();
+
+// Add Authorization with custom policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("OwnerOrAdmin_userId", policy =>
+        policy.Requirements.Add(new OwnerOrAdminRequirement("userId")));
+});
+
+// Register Authorization Handlers
+builder.Services.AddSingleton<IAuthorizationHandler, OwnerOrAdminHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
