@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Eshop.Contracts.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Eshop.API.Services;
 
 namespace Eshop.API.Controllers
 {
@@ -13,10 +14,12 @@ namespace Eshop.API.Controllers
     public class ShoppingCartController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public ShoppingCartController(ApplicationDbContext context)
+        public ShoppingCartController(ApplicationDbContext context, IShoppingCartService shoppingCartService)
         {
             _context = context;
+            _shoppingCartService = shoppingCartService;
         }
 
         [HttpGet]
@@ -46,38 +49,24 @@ namespace Eshop.API.Controllers
         [Authorize]
         public async Task<ActionResult<ShoppingCartDto>> GetCartByUser(string userId)
         {
-            // Security: Verify that the requesting user is either the owner or an Admin
+            // IDOR Protection: Verify requesting user is owner or Admin
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
             
             if (currentUserId != userId && !isAdmin)
             {
-                return Forbid(); // 403 Forbidden
+                return Forbid();
             }
             
-            var cart = await _context.ShoppingCarts
-                .Include(c => c.CartItems)
-                .ThenInclude(ci => ci.Product)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-
+            var cart = await _shoppingCartService.GetCartByUserIdAsync(userId);
             if (cart == null)
                 return NotFound();
 
-            return new ShoppingCartDto
-            {
-                Id = cart.Id,
-                UserId = cart.UserId,
-                Items = cart.CartItems.Select(ci => new CartItemDto
-                {
-                    ProductId = ci.ProductId,
-                    ProductName = ci.Product.Name,
-                    Price = ci.Product.Price,
-                    Quantity = ci.Quantity
-                }).ToList()
-            };
+            return Ok(cart);
         }
 
         [HttpPost("add")]
+        [Authorize]
         public async Task<IActionResult> AddItemToCart([FromBody] CartItemDto request)
         {
             if (request is null || string.IsNullOrWhiteSpace(request.UserId))
@@ -85,49 +74,21 @@ namespace Eshop.API.Controllers
             if (request.ProductId <= 0)
                 return BadRequest("Valid ProductId is required.");
 
-            var product = await _context.Products.FindAsync(request.ProductId);
-            if (product == null) return NotFound("Product not found.");
-
-            var cart = await _context.ShoppingCarts
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == request.UserId);
-
-            if (cart == null)
+            // IDOR Protection
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole("Admin");
+            
+            if (currentUserId != request.UserId && !isAdmin)
             {
-                cart = new ShoppingCart
-                {
-                    UserId = request.UserId,
-                    CartItems = new List<CartItem>()
-                };
-                _context.ShoppingCarts.Add(cart);
+                return Forbid();
             }
 
-            var existingItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == request.ProductId);
-            if (existingItem != null)
-            {
-                existingItem.Quantity += 1;
-            }
-            else
-            {
-                cart.CartItems.Add(new CartItem
-                {
-                    ProductId = request.ProductId,
-                    Quantity = 1
-                });
-            }
+            var (success, message) = await _shoppingCartService.AddItemToCartAsync(request.UserId, request.ProductId, 1);
+            
+            if (!success)
+                return BadRequest(message);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex)
-            {
-                return BadRequest(ex.InnerException?.Message ?? ex.Message);
-            }
-
-            var productQty = cart.CartItems.First(ci => ci.ProductId == request.ProductId).Quantity;
-            var total = cart.CartItems.Sum(ci => ci.Quantity);
-            return Ok(new { productQty, total });
+            return Ok(new { message });
         }
 
         [HttpPost]
@@ -153,26 +114,27 @@ namespace Eshop.API.Controllers
         }
 
         [HttpPost("decrease")]
+        [Authorize]
         public async Task<IActionResult> Decrease([FromBody] CartItemDto req)
         {
-            var cart = await _context.ShoppingCarts
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == req.UserId);
+            if (req is null || string.IsNullOrWhiteSpace(req.UserId))
+                return BadRequest("UserId is required.");
 
-            if (cart == null) return NotFound("Cart not found.");
+            // IDOR Protection
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole("Admin");
+            
+            if (currentUserId != req.UserId && !isAdmin)
+            {
+                return Forbid();
+            }
 
-            var item = cart.CartItems.FirstOrDefault(ci => ci.ProductId == req.ProductId);
-            if (item == null) return NotFound("Item not in cart.");
+            var (success, message) = await _shoppingCartService.DecreaseItemQuantityAsync(req.UserId, req.ProductId, 1);
+            
+            if (!success)
+                return BadRequest(message);
 
-            item.Quantity -= 1;
-            if (item.Quantity <= 0)
-                _context.CartItems.Remove(item);
-
-            await _context.SaveChangesAsync();
-
-            var productQty = cart.CartItems.FirstOrDefault(ci => ci.ProductId == req.ProductId)?.Quantity ?? 0;
-            var total = cart.CartItems.Sum(ci => ci.Quantity);
-            return Ok(new { productQty, total });
+            return Ok(new { message });
         }
     }
 }
