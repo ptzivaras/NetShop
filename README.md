@@ -231,33 +231,40 @@ This project uses **two isolated database contexts** for different concerns:
 ---
 
 ### TODO 🔜 
-- [ ] **API Versioning** - Versioned API endpoints (v1, v2) for backward compatibility
-- [ ] **API Authentication ** - JWT ή Shared Cookies (Critical!Current Authentication not working properly)
-- [ ] **Payment Integration** - Stripe payment gateway for checkout
-- [ ] **Language Switcher** - Make it work and add UI for Dropdown in navbar for EN/EL selection and 
-- [ ] **Product Search** - Advanced search with filters (price range, category, stock status)
-- [ ] **Product Reviews** - Customer ratings and reviews
-- [ ] **Repository Pattern** - Controllers directly inject DbContext. Refactor from direct DbContext to Repository abstraction layer.
-- [ ] **Authentication for API Choice1** - Add shared cookie in browser
-- [ ] **Authentication for API Choice2** -(JWT Authentication for API) Replace cookie auth with stateless JWT tokens for API layer
-- [ ] **Concurrency Issue** If a 2 users want to buy a product that has remaining stock of 1 then how we solve it in  a Eshop will it have high or low traffic? Maybe Implement optimistic concurrency for race conditions. Or pessimistic.
-- [ ] **IDOR Permanent Fix** Find a better smarter IDOR Solution.
-- **API Authentication Not Fully Configured** - API has `[Authorize]` attributes but lacks JWT/Bearer token authentication scheme. Currently relies on manual `userId` validation.
-- **Business Logic in Controllers** - Many lines of business logic (should move to service layer)
-- [ ] **Error Handling ** - Global exception middleware
-- [ ] **Input Validation ** - FluentValidation σε DTOs
-- [ ] **Alert Triggers** Implement automatic triggers (DB triggers or background job)
-- **CQRS**  -(Command Query Responsibility Segregation) separates read from write operations, try to find a reason i need this in this project and implement it.
-### 🧪 Testing & Quality
-- [ ] Unit tests with xUnit
-- [ ] Integration tests with TestServer
-- [ ] API endpoint tests
 
-### 🚀 DevOps & Deployment
-- [ ] Docker containerization
-- [ ] CI/CD pipeline (GitHub Actions)
-- [ ] Azure deployment configuration
-- [ ] Microservices ?
+#### ✅ Completed
+- [x] **Input Validation** - FluentValidation for DTOs (ProductDto, CategoryDto, OrderDto)
+- [x] **Error Handling** - Global exception middleware to prevent sensitive data exposure
+- [x] **HTTPS/TLS** - All communication encrypted, cookies protected with Secure flag
+
+#### 🚧 High Priority (Security & Core Functionality)
+- [ ] **API Authentication** - JWT or Shared Cookies (Critical! API [Authorize] attributes not enforced)
+  - **Choice 1:** Shared cookie authentication between Web and API
+  - **Choice 2:** JWT tokens for stateless API authentication
+- [ ] **Repository Pattern** - Refactor controllers to use Repository abstraction layer (improves testability, security, maintainability)
+- [ ] **Service Layer** - Move business logic from controllers to service classes (67 lines in OrdersController.CreateOrder)
+- [ ] **IDOR Permanent Fix** - Replace manual userId validation with proper authorization policies
+
+#### 📦 Features
+- [ ] **API Versioning** - Versioned endpoints (v1, v2) for backward compatibility
+- [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
+- [ ] **Language Switcher** - UI dropdown in navbar for EN/EL language selection
+- [ ] **Product Search** - Advanced filters (price range, category, stock status)
+- [ ] **Product Reviews** - Customer ratings and review system
+- [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
+- [ ] **Concurrency Control** - Handle race conditions for limited stock (optimistic/pessimistic locking)
+
+#### 🧪 Testing & Quality
+- [ ] **Unit Tests** - xUnit tests for services and business logic
+- [ ] **Integration Tests** - TestServer for API endpoint testing
+- [ ] **Load Testing** - Performance benchmarks and stress testing
+
+#### 🚀 DevOps & Deployment
+- [ ] **Docker Containerization** - Dockerfile for API and Web projects
+- [ ] **CI/CD Pipeline** - GitHub Actions for automated build/test/deploy
+- [ ] **Azure Deployment** - App Service or Container Apps configuration
+- [ ] **Monitoring & Logging** - Application Insights / Serilog structured logging
+
 ---
 
 ## 📚 Documentation
