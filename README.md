@@ -285,7 +285,12 @@ This project uses **two isolated database contexts** for different concerns:
 #### 📦 Features (Future)
 - [ ] **AJAX Cart Updates** - Add to cart without page reload (JavaScript + Fetch API)
 - [ ] **Product Wishlist** - Save favorite products for later
-- [ ] **Admin Dashboard** - Comprehensive admin panel (sales analytics, inventory overview, user management)
+- [ ] **Admin Dashboard** - Comprehensive admin panel with:
+  - Sales Analytics: Revenue charts, orders per period, top-selling products
+  - Inventory Overview: Real-time stock levels, low stock report
+  - User Management: View all users, assign/change roles (Admin/Customer)
+  - Order Dashboard: Filter orders by status/date, view order trends
+  - Product Statistics: Total products, products by category, average price with charts
 - [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
 - [ ] **Product Search** - Advanced filters (price range, category, stock status)
 - [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
