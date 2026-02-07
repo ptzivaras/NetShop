@@ -15,5 +15,6 @@ namespace Eshop.Core.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<StockAlert> StockAlerts { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

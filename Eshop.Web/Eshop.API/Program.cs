@@ -51,6 +51,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<IStockAlertRepository, StockAlertRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 // Register Services
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -58,6 +59,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<IStockAlertService, StockAlertService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 // Add Rate Limiting
 builder.Services.AddRateLimiter(options =>

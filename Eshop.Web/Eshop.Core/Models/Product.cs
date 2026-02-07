@@ -16,6 +16,7 @@ namespace Eshop.Core.Models
 
         public ICollection<OrderItem>? OrderItems { get; set; }
         public ICollection<CartItem>? CartItems { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
 
         public int LowStockThreshold { get; set; } = 5;
 
