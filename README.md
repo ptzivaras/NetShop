@@ -40,6 +40,11 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - Admin can view, acknowledge, and dismiss alerts
 - TODO: Implement automatic triggers (DB triggers or background job)
 
+### ⭐ Product Reviews
+- Customer rating system (1-5 stars) with comments (max 1000 chars)
+- CRUD operations with authorization (users can only edit/delete their own reviews)
+- API endpoints: GET by product/user, POST/PUT/DELETE
+- IDOR protection with ownership validation
 
 ### 👤 User Profile
 - View user account information (email, account details)
@@ -114,7 +119,10 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 **Performance Optimizations:**
 - **Database Indexes** - Foreign key indexes on Products.CategoryId, OrderItems.OrderId/ProductId, CartItems relationships
 - **Query Optimization** - Used `AsNoTracking()` for read-only operations
-
+- **Optimistic Concurrency Control** - `[Timestamp] RowVersion` on Product entity prevents lost updates
+  - Detects simultaneous modifications by multiple users
+  - DbUpdateConcurrencyException handling with user-friendly error messages
+  - Applied to stock updates during order placement
 - **Caching** - `IMemoryCache` caches frequently accessed product listings (reduces DB round-trips)
 - **Pagination** - All list endpoints support `page` and `pageSize` parameters (default: 11 items/page)
 - **Transactions** - `TransactionScope` ensures atomic operations in order creation (cart → order → stock update)
@@ -129,9 +137,19 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - **Entity Framework Core 8.0** - ORM with Code-First migrations
 - **SQL Server LocalDB** - Development database
 - **ASP.NET Identity** - Authentication and authorization
-- **RestSharp** - HTTP client for API consumption
+- **RestSharp 112.1.0** - HTTP client for MVC → API communication
+  - Simpler code (automatic JSON deserialization)
+  - Built-in error handling
+  - Automatic query parameter encoding
+- **Asp.Versioning.Mvc 8.1.1** - API endpoint versioning
 - **Rate Limiting** - Built-in ASP.NET Core rate limiting middleware
-- **FluentValidation** - Library for validating object data values with fluent rules
+- **FluentValidation** - DTO validation with fluent rules
+
+**Testing:**
+- **xUnit** - Unit testing framework
+- **Moq 4.20.72** - Mocking library for repository isolation
+- **FluentAssertions 8.8.0** - Readable test assertions
+- **Microsoft.AspNetCore.Mvc.Testing** - Integration testing with TestServer
 
 **Frontend:**
 - **Razor Views** - Server-side rendering
@@ -145,7 +163,6 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - **Configuration Management** - appsettings.json for environment-specific settings
 - **Caching** - IMemoryCache for performance optimization
 - **Transactions** - TransactionScope for data consistency  
-- **RestSharp + Newtonsoft.Json** (API consumption in MVC layer)  
 
 ---
 
@@ -256,6 +273,10 @@ This project uses **two isolated database contexts** for different concerns:
   - Route/query parameter validation via authorization handler
   - Centralized authorization logic (OwnerOrAdminRequirement + Handler)
   - Applied to: GetOrdersByUser, GetCartByUser endpoints
+- [x] **API Versioning** - All API endpoints versioned at v1.0
+- [x] **Optimistic Concurrency Control** - Product stock updates with conflict detection
+- [x] **Product Reviews** - Customer rating system (1-5 stars) with CRUD and authorization
+- [x] **Unit Tests** - Service layer testing (CategoryService, ShoppingCartService, StockAlertService)
 
 #### 🚧 High Priority (Security & Core Functionality)
 - [ ] **API Authentication** - JWT or Shared Cookies (for later if API consumed by mobile/SPA)
@@ -263,20 +284,14 @@ This project uses **two isolated database contexts** for different concerns:
   - Future: If React/mobile apps needed, implement JWT tokens
 
 #### 📦 Features (Future)
-- [ ] **API Versioning** - Versioned endpoints (v1, v2) for backward compatibility
 - [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
-- [ ] **Language Switcher** - UI dropdown in navbar for EN/EL language selection
 - [ ] **Product Search** - Advanced filters (price range, category, stock status)
-- [ ] **Product Reviews** - Customer ratings and review system
 - [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
-- [ ] **Concurrency Control** - Handle race conditions for limited stock (optimistic/pessimistic locking)
 
 #### 🧪 Testing & Quality (Future)
-- [ ] **Unit Tests** - xUnit project for service layer tests
-  - Mock repositories with Moq for isolated unit tests
-  - Test OrderService transaction logic, validation rules
-- [ ] **Integration Tests** - TestServer for API endpoint tests
-  - Test full request/response cycle with in-memory database
+- [ ] **Integration Tests** - Fix authentication configuration in TestWebApplicationFactory
+  - Currently: 16/17 tests failing with "No authenticationScheme was specified" error
+  - Need: TestAuthenticationHandler to mock authentication in test environment
 - [ ] **Load Testing** - k6 or Apache JMeter for performance benchmarks
 
 #### 🚀 DevOps & Deployment (Future - Keep for end)
@@ -289,6 +304,6 @@ This project uses **two isolated database contexts** for different concerns:
 ---
 
 ## 📚 Documentation
-Document everything, maybe i will forget them in the future. I will try to think add as many concepts that can solve real world problems. I will upload Docs when polished.
+Document everything, maybe i will forget them in the future. I will try to think and add as many concepts as i can  solving real world problems. I will upload Docs when polished.
 Detailed documentation available in [`/docs`](docs/):
 ---
