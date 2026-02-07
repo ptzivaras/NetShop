@@ -1,9 +1,7 @@
 ﻿using Eshop.Contracts.DTOs;
-using Eshop.Core.Data;
-using Eshop.Core.Models;
+using Eshop.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Eshop.API.Controllers
@@ -12,63 +10,36 @@ namespace Eshop.API.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
-            var categories = await _context.Categories.ToListAsync();
-            var result = categories.Select(c => new CategoryDto
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Description = c.Description
-            }).ToList();
-            return Ok(result);
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            return Ok(categories);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryService.GetCategoryByIdAsync(id);
             if (category == null)
                 return NotFound();
 
-            var dto = new CategoryDto
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            };
-
-            return Ok(dto);
+            return Ok(category);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryDto categoryDto)
         {
-            var category = new Category
-            {
-                Name = categoryDto.Name,
-                Description = categoryDto.Description
-            };
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            var createdDto = new CategoryDto
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            };
-
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, createdDto);
+            var createdDto = await _categoryService.CreateCategoryAsync(categoryDto);
+            return CreatedAtAction(nameof(GetCategory), new { id = createdDto.Id }, createdDto);
         }
 
         [HttpPut("{id}")]
@@ -78,14 +49,10 @@ namespace Eshop.API.Controllers
             if (id != categoryDto.Id)
                 return BadRequest();
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var success = await _categoryService.UpdateCategoryAsync(id, categoryDto);
+            if (!success)
                 return NotFound();
 
-            category.Name = categoryDto.Name;
-            category.Description = categoryDto.Description;
-
-            await _context.SaveChangesAsync();
             return NoContent();
         }
 
@@ -93,12 +60,9 @@ namespace Eshop.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var success = await _categoryService.DeleteCategoryAsync(id);
+            if (!success)
                 return NotFound();
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
