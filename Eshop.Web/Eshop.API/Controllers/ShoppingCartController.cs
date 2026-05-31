@@ -77,11 +77,15 @@ namespace Eshop.API.Controllers
             }
 
             var (success, message) = await _shoppingCartService.AddItemToCartAsync(request.UserId, request.ProductId, 1);
-            
+
             if (!success)
                 return BadRequest(message);
 
-            return Ok(new { message });
+            var cart = await _shoppingCartService.GetCartByUserIdAsync(request.UserId);
+            var productQty = cart?.Items.FirstOrDefault(i => i.ProductId == request.ProductId)?.Quantity ?? 1;
+            var total = cart?.Items.Sum(i => i.Quantity) ?? productQty;
+
+            return Ok(new { productQty, total });
         }
 
         [HttpPost]

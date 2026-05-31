@@ -3,7 +3,6 @@ using Eshop.Web.Services.Interfaces;
 using Eshop.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace Eshop.Web.Controllers
 {
@@ -51,8 +50,16 @@ namespace Eshop.Web.Controllers
         public async Task<IActionResult> Create(ProductViewModel product)
         {
             if (!ModelState.IsValid) return View(product);
-            await _productService.CreateAsync(product);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _productService.CreateAsync(product);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Failed to create product: {ex.Message}";
+                return View(product);
+            }
         }
 
         [Authorize(Roles = "Admin")]
@@ -68,12 +75,18 @@ namespace Eshop.Web.Controllers
         public async Task<IActionResult> Edit(ProductViewModel product)
         {
             if (!ModelState.IsValid) return View(product);
-            await _productService.UpdateAsync(product);
-            if (product.ImageFile != null && product.ImageFile.Length > 0)
+            try
             {
-                await _productService.UploadImageAsync(product.Id, product.ImageFile);
+                await _productService.UpdateAsync(product);
+                if (product.ImageFile != null && product.ImageFile.Length > 0)
+                    await _productService.UploadImageAsync(product.Id, product.ImageFile);
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Failed to update product: {ex.Message}";
+                return View(product);
+            }
         }
 
         [Authorize(Roles = "Admin")]
@@ -88,8 +101,16 @@ namespace Eshop.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _productService.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _productService.DeleteAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Failed to delete product: {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

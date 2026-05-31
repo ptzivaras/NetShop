@@ -3,7 +3,6 @@ using Eshop.Web.Services.Interfaces;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Eshop.Contracts.DTOs;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace Eshop.Web.Controllers
 {
@@ -61,9 +60,11 @@ namespace Eshop.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PlaceOrder()
         {
-            var userId = GetUserId();
+            if (!User.Identity?.IsAuthenticated ?? true) return Challenge();
+            var userId = GetUserIdStrict();
 
             try
             {
