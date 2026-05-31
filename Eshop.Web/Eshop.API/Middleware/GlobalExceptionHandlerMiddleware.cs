@@ -31,6 +31,8 @@ namespace Eshop.API.Middleware
             context.Response.ContentType = "application/problem+json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
+            var correlationId = context.Items["X-Correlation-Id"]?.ToString();
+
             var problem = new ProblemDetails
             {
                 Type = "https://httpstatuses.com/500",
@@ -38,6 +40,9 @@ namespace Eshop.API.Middleware
                 Status = StatusCodes.Status500InternalServerError,
                 Detail = "An error occurred while processing your request."
             };
+
+            if (correlationId != null)
+                problem.Extensions["correlationId"] = correlationId;
 
             await context.Response.WriteAsJsonAsync(problem);
         }

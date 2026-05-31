@@ -116,6 +116,7 @@ var app = builder.Build();
 
 // Add Global Exception Handler (should be first middleware)
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+app.UseMiddleware<CorrelationIdMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
