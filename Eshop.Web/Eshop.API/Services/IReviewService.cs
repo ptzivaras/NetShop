@@ -4,7 +4,7 @@ namespace Eshop.API.Services
 {
     public interface IReviewService
     {
-        Task<IEnumerable<ReviewDto>> GetReviewsByProductIdAsync(int productId);
+        Task<(IEnumerable<ReviewDto> Reviews, int TotalCount)> GetReviewsByProductIdAsync(int productId, int page, int pageSize);
         Task<IEnumerable<ReviewDto>> GetReviewsByUserIdAsync(string userId);
         Task<ReviewDto?> GetReviewByIdAsync(int id);
         Task<ReviewDto> CreateReviewAsync(string userId, CreateReviewDto reviewDto);

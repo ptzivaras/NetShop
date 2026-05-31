@@ -22,10 +22,18 @@ namespace Eshop.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+        public async Task<ActionResult<PagedResult<OrderDto>>> GetOrders(int page = 1, int pageSize = 20)
         {
-            var orders = await _orderService.GetAllOrdersAsync();
-            return Ok(orders);
+            var (orders, total) = await _orderService.GetAllOrdersAsync(page, pageSize);
+
+            return Ok(new PagedResult<OrderDto>
+            {
+                Items = orders.ToList(),
+                TotalCount = total,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling((double)total / pageSize)
+            });
         }
 
         [HttpGet("user/{userId}")]

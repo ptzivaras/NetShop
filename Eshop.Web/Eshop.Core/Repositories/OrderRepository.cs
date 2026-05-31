@@ -37,5 +37,21 @@ namespace Eshop.Core.Repositories
                 .ThenInclude(oi => oi.Product)
                 .FirstOrDefaultAsync(o => o.Id == orderId);
         }
+
+        public async Task<IEnumerable<Order>> GetAllPagedAsync(int page, int pageSize)
+        {
+            return await _dbSet
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .OrderByDescending(o => o.OrderDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> CountAllAsync()
+        {
+            return await _dbSet.CountAsync();
+        }
     }
 }

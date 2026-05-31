@@ -15,10 +15,12 @@ namespace Eshop.API.Services
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<ReviewDto>> GetReviewsByProductIdAsync(int productId)
+        public async Task<(IEnumerable<ReviewDto> Reviews, int TotalCount)> GetReviewsByProductIdAsync(int productId, int page, int pageSize)
         {
-            var reviews = await _reviewRepository.GetReviewsByProductIdAsync(productId);
-            return reviews.Select(r => new ReviewDto
+            var reviews = await _reviewRepository.GetReviewsByProductIdAsync(productId, page, pageSize);
+            var total = await _reviewRepository.CountByProductIdAsync(productId);
+
+            var dtos = reviews.Select(r => new ReviewDto
             {
                 Id = r.Id,
                 ProductId = r.ProductId,
@@ -28,6 +30,8 @@ namespace Eshop.API.Services
                 Comment = r.Comment,
                 CreatedAt = r.CreatedAt
             });
+
+            return (dtos, total);
         }
 
         public async Task<IEnumerable<ReviewDto>> GetReviewsByUserIdAsync(string userId)

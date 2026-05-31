@@ -26,10 +26,11 @@ namespace Eshop.API.Services
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
+        public async Task<(IEnumerable<OrderDto> Orders, int TotalOrders)> GetAllOrdersAsync(int page, int pageSize)
         {
-            var orders = await _orderRepository.GetAllAsync();
-            return orders.Select(MapToDto).ToList();
+            var orders = await _orderRepository.GetAllPagedAsync(page, pageSize);
+            var total = await _orderRepository.CountAllAsync();
+            return (orders.Select(MapToDto).ToList(), total);
         }
 
         public async Task<(IEnumerable<OrderDto> Orders, int TotalOrders)> GetOrdersByUserIdAsync(string userId, int page, int pageSize)

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Asp.Versioning;
+using System.Linq;
 
 namespace Eshop.API.Controllers
 {
@@ -20,10 +21,18 @@ namespace Eshop.API.Controllers
         }
 
         [HttpGet("product/{productId}")]
-        public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviewsByProduct(int productId)
+        public async Task<ActionResult<PagedResult<ReviewDto>>> GetReviewsByProduct(int productId, int page = 1, int pageSize = 10)
         {
-            var reviews = await _reviewService.GetReviewsByProductIdAsync(productId);
-            return Ok(reviews);
+            var (reviews, total) = await _reviewService.GetReviewsByProductIdAsync(productId, page, pageSize);
+
+            return Ok(new PagedResult<ReviewDto>
+            {
+                Items = reviews.ToList(),
+                TotalCount = total,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling((double)total / pageSize)
+            });
         }
 
         [HttpGet("user/{userId}")]

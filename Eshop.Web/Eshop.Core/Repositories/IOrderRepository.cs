@@ -9,5 +9,7 @@ namespace Eshop.Core.Repositories
         Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId, int page, int pageSize);
         Task<int> CountByUserIdAsync(string userId);
         Task<Order?> GetOrderWithItemsAsync(int orderId);
+        Task<IEnumerable<Order>> GetAllPagedAsync(int page, int pageSize);
+        Task<int> CountAllAsync();
     }
 }
