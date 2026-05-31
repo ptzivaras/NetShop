@@ -376,8 +376,7 @@ appsettings.Production.json
 # Design/mockup files
 Figma_Delete/
 
-# Documentation (not committed - private reference)
-docs/
+
 
 # IDE specific
 .vscode/

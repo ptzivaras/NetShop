@@ -1,4 +1,4 @@
-# 🛒 Eshop Project
+# Eshop Project
 This project follows a **3-Layer Architecture** pattern with clear separation of concerns.
 
 A full-stack **E-commerce Web Application** built with modern technologies:  
@@ -9,64 +9,64 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - **Database**: SQL Server with Code-First Migrations, Seeders for initial data  
 ---
 
-## 🚀 Features
+## Features
 
-### 👤 Authentication & Authorization
+### Authentication & Authorization
 - ASP.NET Identity integration with role-based access
 - Two roles: **Admin** and **Customer**
 - Secure login, registration, password management
 - Auto-seeded admin account: `admin@eshop.com` / `Admin123!`
 
-### 📦 Product & Category Management (Admin Only)
+### Product & Category Management (Admin Only)
 - Full CRUD operations for Products and Categories
 - Product image upload and storage (BLOB in database)
 - Pagination with advanced search & filters: text search, category, **price range**, **stock status**
 - Category-based product browsing
 
-### 🛒 Shopping Cart
+### Shopping Cart
 - Add/Remove/Update product quantities
 - Persistent cart per authenticated user
 - **AJAX add to cart** — no page reload, Bootstrap toast notification, live badge count in navbar
 - Seamless checkout integration
 
-### 📑 Orders
+### Orders
 - Place orders from shopping cart
 - Order confirmation and history tracking
 - Paginated order history per user
 
-### 📊 Admin Dashboard
+### Admin Dashboard
 - **Stats cards**: Total products, orders, revenue (+ this month breakdown), low-stock alerts
 - **Monthly chart**: Orders (bar) + Revenue (line) for last 6 months via Chart.js
 - Recent orders list with order ID, date, total
 
-### 📑 Stock Alerts
+### Stock Alerts
 - **Automatic detection** via background service — runs every 10 minutes, triggers alerts when stock ≤ 5 units
 - Prevents duplicate alerts (skips products with existing unacknowledged alert)
 - Admin can view, acknowledge, and dismiss alerts
 - Alert count badge in navbar (live count from API)
 
-### ⭐ Product Reviews
+### Product Reviews
 - Customer rating system (1-5 stars) with comments (max 1000 chars)
 - CRUD operations with authorization (users can only edit/delete their own reviews)
 - API endpoints: GET by product/user, POST/PUT/DELETE
 - IDOR protection with ownership validation
 
-### 👤 User Profile
+### User Profile
 - View user account information (email, account details)
 - Personal order history with pagination
 - Order details and status tracking
 
-### ♡ Product Wishlist
+### Product Wishlist
 - Authenticated users can save products to a personal wishlist
 - ♡ button on every product card and details page
 - Dedicated `/Wishlist` page with all saved products and remove option
 - Stored in database per user (persists across sessions)
 
-### 🌍 Localization
+### Localization
 - Multi-language support: English (default) & Greek
 - Cookie-based language preference
 
-### 🎨 UI/UX
+### UI/UX
 - Fully responsive Bootstrap 5 layout
 - Product cards with images, titles, descriptions, pricing
 - Toast notifications for user actions
@@ -75,7 +75,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - Image upload with preview (JPEG format for optimal storage)
 - **UI Animations**: page fade-in on load, card hover lift, button press scale, navbar scroll shadow, cart badge bounce, stat count-up on Admin Dashboard
 
-### 🔒 Security & Performance 
+### Security & Performance 
 
 **Authentication & Authorization:**
 - **ASP.NET Identity + Cookies**
@@ -106,9 +106,6 @@ A full-stack **E-commerce Web Application** built with modern technologies:
   - Stock Alerts: All admin dashboard operations
 - **Customer-Only Endpoints** ✅ - Write operations protected with `[Authorize(Roles = "Customer")]`
 - **CORS Configuration** ✅ - API accepts requests only to trusted web origin
-  - Go to appsettings.json and change domain name.
-  - Now we are not in production this also needs improvement from local to production.
-  - EG: https://randomname.com will be project future name :)
   - Configured with `AllowCredentials` for cookie support
 - **No Hardcoded URLs** ✅ - All service API URLs configured via `appsettings.json:ApiSettings:BaseUrl`
   - Environment-specific configurations (Development, Staging, Production)
@@ -124,7 +121,6 @@ A full-stack **E-commerce Web Application** built with modern technologies:
   - Centralizes data access logic for easier security audits
 - **Service Layer** ✅ - Business logic extracted from controllers to service classes
   - Services for every domain (Order, Product, Category, ShoppingCart, StockAlert, Review, Wishlist)
-  - OrderService handles complex transaction logic (cart → order → stock update)
   - Clean architecture: Controller → Service → Repository → DbContext
 
 **Performance Optimizations:**
@@ -141,7 +137,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Backend:**
 - **ASP.NET Core 8.0** - Web API + MVC Framework
@@ -178,7 +174,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 ---
 
 
-## 🗄️ Layer Communication Flow
+## Layer Communication Flow
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -225,7 +221,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - RESTful endpoints for CRUD operations
 - Direct database access via `ApplicationDbContext`
 - Swagger/OpenAPI documentation
-- Stateless, token-based authentication
+- REST API — consumed internally by the MVC Web layer via RestSharp. No external auth scheme (TODO: JWT)
 
 **🔷 Eshop.Web** (Presentation/MVC)
 - Razor views with Bootstrap 5
@@ -235,7 +231,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 
 ---
 
-## 🗄️ Database Architecture
+## Database Architecture
 
 ### Two Separate DbContexts & Databases
 
@@ -254,31 +250,18 @@ This project uses **two isolated database contexts** for different concerns:
 - **Used by:** Web layer only (login, registration, role management)
 
 ### Why This Design?
-
-✅ **Separation of Concerns** - Authentication is a presentation-layer concern, not core business logic  
-✅ **Security Isolation** - User credentials separated from business data  
-✅ **Independent Scaling** - Deploy databases on different servers if needed  
-✅ **Clean Migrations** - Identity changes don't affect business schema  
-
-> **Key Principle:** Core layer = pure business logic (Products, Orders). Web layer = user-facing features (Login, Registration). Identity management is NOT core business logic.
+ **Separation of Concerns** - Authentication is a presentation-layer concern, not core business logic  
+ **Security Isolation** - User credentials separated from business data  
+ **Independent Scaling** - Deploy databases on different servers if needed  
+ **Clean Migrations** - Identity changes don't affect business schema  
 ---
 
-### TODO 🔜 
-
-#### ✅ Completed
+####  Detailed Concepts in Project
 - [x] **Input Validation** - FluentValidation for DTOs (ProductDto, CategoryDto, PlaceOrderRequestDto)
-  - 3 validators with custom rules, integrated with ASP.NET Core model binding
 - [x] **Error Handling** - Global exception middleware to prevent sensitive data exposure
-  - Sanitized error messages, server-side logging, no stack traces to clients
 - [x] **HTTPS/TLS** - All communication encrypted, cookies protected with Secure flag
-  - API: https://localhost:7068, Web: https://localhost:7252
 - [x] **Repository Pattern** - Abstraction layer between controllers and database
-  - Generic base + 5 domain repositories (12 files total)
-  - All controllers refactored to use repositories via services
 - [x] **Service Layer** - Business logic extracted from controllers
-  - 5 services (CategoryService, ProductService, OrderService, ShoppingCartService, StockAlertService)
-  - Controllers reduced by 332 lines (-42%)
-  - OrderService handles 67-line transaction logic previously in controller
 - [x] **IDOR Permanent Fix** - Policy-based authorization with custom attributes
   - Custom `[AuthorizeOwnerOrAdmin]` attribute replaces manual checks
   - Route/query parameter validation via authorization handler
@@ -291,44 +274,30 @@ This project uses **two isolated database contexts** for different concerns:
 - [x] **Consistent Error Responses** - ProblemDetails-style JSON for all errors (incl. rate limiting)
 - [x] **Correlation IDs** - X-Correlation-Id header on every request/response, added to log scope
 - [x] **Structured Logging** - Correlation ID in log scope for per-request tracing
-- [x] **Validation Coverage** - FluentValidation for all request DTOs (added CartItemDto, CreateReviewDto)
 - [x] **Pagination/Filtering Consistency** - Added pagination to GetAllOrders and GetReviewsByProduct
 - [x] **AJAX Cart Updates** - Add to cart without page reload, toast notification, live cart badge
 - [x] **Admin Dashboard** - Stats cards (products, orders, revenue, alerts), monthly chart (Chart.js), recent orders
 - [x] **Exception Mapping** - Domain exceptions mapped to correct HTTP status codes (400/403/404/501/500)
-  - `ArgumentException` → 400, `KeyNotFoundException` → 404, `UnauthorizedAccessException` → 403
-  - All responses in ProblemDetails format with correlationId
-- [x] **Stock Alert Triggers** - Background service (`IHostedService`) runs every 10 minutes
-  - Detects products with stock ≤ 5 units, creates alert only if no existing unacknowledged alert
-
-- [x] **Product Wishlist** - ♡ button on product cards and details page, dedicated `/Wishlist` page
+- [x] **Stock Alert Triggers** - Background service (`IHostedService`) runs every 10 minutes(Detects products with stock ≤ 5 units, creates alert only if no existing unacknowledged alert)
+- [x] **Product Wishlist** - button on product cards and details page
 - [x] **Product Search** - Advanced filters: price range (min/max), stock status, text + category
-- [x] **UI Animations** - Card hover lift, page fade-in, navbar scroll shadow, badge bounce, count-up
+- [x] **UI Animations** - Card hover lift, page fade-in, navbar scroll shadow, badge bounce, count-up etc
 - [x] **Integration Tests** - TestWebApplicationFactory with SQLite in-memory DB and TestAuthenticationHandler
   - All API endpoints tested: routing, authorization (401 for unauthenticated), pagination, filtering
 
-#### 🚧 Remaining
+#### Not Implemented Concepts(Important)
 - [ ] **JWT Authentication** — Required to fully secure direct API access (Postman/curl/mobile)
   - **Current state:** API uses a NoOp auth handler for internal Web→API calls. ASP.NET Identity protects end-users via the Web layer, but the API itself has no real authentication scheme.
   - **Why it matters:** Without JWT, anyone who finds the API URL can call it directly without authentication. The IDOR checks in controllers are the only line of defense.
   - **When to implement:** If the API is ever exposed externally (mobile app, React SPA, public docs).
 
-#### 📦 Features (Future)
-- [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
-
-#### 🧪 Testing & Quality
 - [ ] **Load Testing** - k6 or Apache JMeter for performance benchmarks
 
-#### 🚀 DevOps & Deployment (Future - Keep for end)
-- [ ] **Docker Containerization** - Multi-stage Dockerfiles for API and Web
-  - Docker Compose for local development with SQL Server container
-- [ ] **CI/CD Pipeline** - GitHub Actions workflow for automated build/test/deploy
-- [ ] **Azure Deployment** - App Service or Container Apps with managed SQL
 - [ ] **Monitoring & Logging** - Application Insights telemetry + Serilog structured logs
 
 ---
 
-## 📚 Documentation
+## Documentation
 Document everything, maybe i will forget them in the future. I will try to think and add as many concepts as i can  solving real world problems. I will upload Docs when polished.
 Documentation available in docs folder!!
 ---
