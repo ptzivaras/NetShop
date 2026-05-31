@@ -250,10 +250,10 @@ This project uses **two isolated database contexts** for different concerns:
 - **Used by:** Web layer only (login, registration, role management)
 
 ### Why This Design?
- **Separation of Concerns** - Authentication is a presentation-layer concern, not core business logic  
- **Security Isolation** - User credentials separated from business data  
- **Independent Scaling** - Deploy databases on different servers if needed  
- **Clean Migrations** - Identity changes don't affect business schema  
+- **Separation of Concerns** - Authentication is a presentation-layer concern, not core business logic
+- **Security Isolation** - User credentials separated from business data
+- **Independent Scaling** - Deploy databases on different servers if needed
+- **Clean Migrations** - Identity changes don't affect business schema
 ---
 
 ####  Detailed Concepts in Project
