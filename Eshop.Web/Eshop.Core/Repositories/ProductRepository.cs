@@ -42,5 +42,13 @@ namespace Eshop.Core.Repositories
         {
             return await _dbSet.AnyAsync(p => p.Id == id);
         }
+
+        public async Task<IEnumerable<Product>> GetLowStockAsync(int threshold)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(p => p.StockQuantity <= threshold)
+                .ToListAsync();
+        }
     }
 }

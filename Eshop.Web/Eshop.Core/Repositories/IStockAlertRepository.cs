@@ -8,5 +8,6 @@ namespace Eshop.Core.Repositories
     {
         Task<int> GetUnacknowledgedCountAsync();
         Task<IEnumerable<StockAlert>> GetAllAlertsAsync();
+        Task<bool> HasUnacknowledgedAlertAsync(int productId);
     }
 }

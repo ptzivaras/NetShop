@@ -12,5 +12,6 @@ namespace Eshop.Core.Repositories
             string? searchTerm = null, 
             int? categoryId = null);
         Task<bool> ExistsAsync(int id);
+        Task<IEnumerable<Product>> GetLowStockAsync(int threshold);
     }
 }

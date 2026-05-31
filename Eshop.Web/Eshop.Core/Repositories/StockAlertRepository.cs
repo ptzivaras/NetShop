@@ -24,5 +24,10 @@ namespace Eshop.Core.Repositories
                 .OrderByDescending(sa => sa.TriggeredAt)
                 .ToListAsync();
         }
+
+        public async Task<bool> HasUnacknowledgedAlertAsync(int productId)
+        {
+            return await _dbSet.AnyAsync(sa => sa.ProductId == productId && !sa.IsAcknowledged);
+        }
     }
 }

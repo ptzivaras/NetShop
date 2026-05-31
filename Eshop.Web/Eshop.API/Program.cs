@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Eshop.API.Authorization;
 using Eshop.API.Authentication;
 using Microsoft.AspNetCore.Authentication;
+using Eshop.API.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,8 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<IStockAlertService, StockAlertService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+
+builder.Services.AddHostedService<StockMonitorBackgroundService>();
 
 // Add Rate Limiting
 builder.Services.AddRateLimiter(options =>
