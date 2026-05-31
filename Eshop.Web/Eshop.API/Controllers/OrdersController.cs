@@ -21,6 +21,14 @@ namespace Eshop.API.Controllers
             _orderService = orderService;
         }
 
+        [HttpGet("stats")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<OrderStatsDto>> GetStats()
+        {
+            var stats = await _orderService.GetStatsAsync();
+            return Ok(stats);
+        }
+
         [HttpGet]
         public async Task<ActionResult<PagedResult<OrderDto>>> GetOrders(int page = 1, int pageSize = 20)
         {

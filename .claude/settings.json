@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"e:\\\\1.CodeProjects\\\\NetShop\" -Recurse -Directory)",
+      "Bash(Select-Object -First 50)",
+      "Bash(Format-Table FullName)",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"E:\\\\1.CodeProjects\\\\NetShop\\\\Figma_Delete\\\\SecurityHelp.jfif\"\\); \"Image size: $\\($img.Width\\)x$\\($img.Height\\)\"; $img.Dispose\\(\\))",
+      "Bash(Get-ChildItem \"e:\\\\1.CodeProjects\\\\NetShop\" -Name)",
+      "Bash(Get-ChildItem -Path \"E:\\\\1.CodeProjects\\\\NetShop\\\\Eshop.Web\" -Directory)",
+      "Bash(Select-Object Name)",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\1.CodeProjects\\\\NetShop\\\\Eshop.Web\\\\Eshop.API\\\\Authentication\")",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(dotnet build *)"
+    ]
+  }
+}

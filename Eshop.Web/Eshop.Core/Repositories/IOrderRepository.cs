@@ -11,5 +11,7 @@ namespace Eshop.Core.Repositories
         Task<Order?> GetOrderWithItemsAsync(int orderId);
         Task<IEnumerable<Order>> GetAllPagedAsync(int page, int pageSize);
         Task<int> CountAllAsync();
+        Task<decimal> GetTotalRevenueAsync();
+        Task<List<Order>> GetOrdersSinceAsync(DateTime since);
     }
 }

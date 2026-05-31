@@ -115,6 +115,10 @@
                         var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
                     } <ul class="navbar-nav flex-grow-1"> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Profile", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-controller="Profile" asp-action="Index">@Localizer["Profile"]</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Products", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="products" asp-action="Index">@Localizer["Products"]</a> </li> <li class="nav-item"> <a class="nav-link @(string.Equals(currentController, "Cart", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase) ? "active" : "")" asp-area="" asp-controller="Cart" asp-action="Index">🛒 @Localizer["Cart"] <span id="cart-badge" class="badge bg-primary" style="display:none"></span></a> </li> @if (User.IsInRole("Admin"))
                         {
+                            <li class="nav-item">
+                                <a class="nav-link @(string.Equals(currentController, "Admin", StringComparison.OrdinalIgnoreCase) ? "active" : "")"
+                                   asp-controller="Admin" asp-action="Index">Dashboard</a>
+                            </li>
                             <li class="nav-item"> @await Component.InvokeAsync("AlertsBadge") </li>
                         } 
                     </ul> 

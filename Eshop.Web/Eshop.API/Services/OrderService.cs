@@ -136,6 +136,41 @@ namespace Eshop.API.Services
             }
         }
 
+        public async Task<OrderStatsDto> GetStatsAsync()
+        {
+            var total = await _orderRepository.CountAllAsync();
+            var revenue = total > 0 ? await _orderRepository.GetTotalRevenueAsync() : 0;
+
+            var now = DateTime.UtcNow;
+            var startOfMonth = new DateTime(now.Year, now.Month, 1);
+            var since6Months = new DateTime(now.Year, now.Month, 1).AddMonths(-5);
+
+            var recentOrders = await _orderRepository.GetOrdersSinceAsync(since6Months);
+
+            var ordersThisMonth = recentOrders.Count(o => o.OrderDate >= startOfMonth);
+            var revenueThisMonth = recentOrders.Where(o => o.OrderDate >= startOfMonth).Sum(o => o.TotalPrice);
+
+            var monthlyStats = recentOrders
+                .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month })
+                .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
+                .Select(g => new MonthlyStatDto
+                {
+                    Label = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
+                    OrderCount = g.Count(),
+                    Revenue = g.Sum(o => o.TotalPrice)
+                })
+                .ToList();
+
+            return new OrderStatsDto
+            {
+                TotalOrders = total,
+                TotalRevenue = revenue,
+                OrdersThisMonth = ordersThisMonth,
+                RevenueThisMonth = revenueThisMonth,
+                MonthlyStats = monthlyStats
+            };
+        }
+
         private static OrderDto MapToDto(Order order)
         {
             return new OrderDto

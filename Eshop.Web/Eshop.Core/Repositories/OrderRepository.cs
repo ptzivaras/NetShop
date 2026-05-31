@@ -53,5 +53,18 @@ namespace Eshop.Core.Repositories
         {
             return await _dbSet.CountAsync();
         }
+
+        public async Task<decimal> GetTotalRevenueAsync()
+        {
+            return await _dbSet.SumAsync(o => o.TotalPrice);
+        }
+
+        public async Task<List<Order>> GetOrdersSinceAsync(DateTime since)
+        {
+            return await _dbSet
+                .Where(o => o.OrderDate >= since)
+                .Select(o => new Order { OrderDate = o.OrderDate, TotalPrice = o.TotalPrice })
+                .ToListAsync();
+        }
     }
 }
