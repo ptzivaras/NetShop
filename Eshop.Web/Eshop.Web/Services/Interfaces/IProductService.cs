@@ -5,7 +5,7 @@ namespace Eshop.Web.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<ProductsListViewModel> GetProductsPagedAsync(int page, int pageSize, string? q = null, int? categoryId = null);
+        Task<ProductsListViewModel> GetProductsPagedAsync(int page, int pageSize, string? q = null, int? categoryId = null, decimal? minPrice = null, decimal? maxPrice = null, bool? inStock = null);
         Task<ProductViewModel?> GetByIdAsync(int id);
         Task CreateAsync(ProductViewModel product);
         Task UpdateAsync(ProductViewModel product);

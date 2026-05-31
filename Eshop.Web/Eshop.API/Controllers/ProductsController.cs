@@ -24,10 +24,13 @@ namespace Eshop.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 11,
             [FromQuery] string? q = null,
-            [FromQuery] int? categoryId = null
+            [FromQuery] int? categoryId = null,
+            [FromQuery] decimal? minPrice = null,
+            [FromQuery] decimal? maxPrice = null,
+            [FromQuery] bool? inStock = null
         )
         {
-            var result = await _productService.GetProductsAsync(page, pageSize, q, categoryId);
+            var result = await _productService.GetProductsAsync(page, pageSize, q, categoryId, minPrice, maxPrice, inStock);
             return Ok(result);
         }
 

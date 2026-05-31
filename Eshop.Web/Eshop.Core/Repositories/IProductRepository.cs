@@ -7,10 +7,13 @@ namespace Eshop.Core.Repositories
     public interface IProductRepository : IRepository<Product>
     {
         Task<(IEnumerable<Product> Items, int TotalCount)> GetPagedAsync(
-            int page, 
-            int pageSize, 
-            string? searchTerm = null, 
-            int? categoryId = null);
+            int page,
+            int pageSize,
+            string? searchTerm = null,
+            int? categoryId = null,
+            decimal? minPrice = null,
+            decimal? maxPrice = null,
+            bool? inStock = null);
         Task<bool> ExistsAsync(int id);
         Task<IEnumerable<Product>> GetLowStockAsync(int threshold);
     }

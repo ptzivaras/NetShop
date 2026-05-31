@@ -6,7 +6,7 @@ namespace Eshop.API.Services
 {
     public interface IProductService
     {
-        Task<PagedResult<ProductDto>> GetProductsAsync(int page, int pageSize, string? searchTerm, int? categoryId);
+        Task<PagedResult<ProductDto>> GetProductsAsync(int page, int pageSize, string? searchTerm, int? categoryId, decimal? minPrice = null, decimal? maxPrice = null, bool? inStock = null);
         Task<ProductDto?> GetProductByIdAsync(int id);
         Task<ProductDto> CreateProductAsync(ProductDto productDto);
         Task<bool> UpdateProductAsync(int id, ProductDto productDto);

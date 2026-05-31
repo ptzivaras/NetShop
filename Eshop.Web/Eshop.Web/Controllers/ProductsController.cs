@@ -21,9 +21,9 @@ namespace Eshop.Web.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 11, string? q = null, int? categoryId = null)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 11, string? q = null, int? categoryId = null, decimal? minPrice = null, decimal? maxPrice = null, bool? inStock = null)
         {
-            var products = await _productService.GetProductsPagedAsync(page, pageSize, q, categoryId);
+            var products = await _productService.GetProductsPagedAsync(page, pageSize, q, categoryId, minPrice, maxPrice, inStock);
             ViewBag.Categories = await _categoryService.GetAllCategoriesAsync();
             return View(products);
         }

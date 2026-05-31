@@ -15,13 +15,12 @@ namespace Eshop.API.Services
             _productRepository = productRepository;
         }
 
-        public async Task<PagedResult<ProductDto>> GetProductsAsync(int page, int pageSize, string? searchTerm, int? categoryId)
+        public async Task<PagedResult<ProductDto>> GetProductsAsync(int page, int pageSize, string? searchTerm, int? categoryId, decimal? minPrice = null, decimal? maxPrice = null, bool? inStock = null)
         {
-            // Validation
             if (page <= 0) page = 1;
             if (pageSize <= 0 || pageSize > 100) pageSize = 11;
 
-            var (products, totalCount) = await _productRepository.GetPagedAsync(page, pageSize, searchTerm, categoryId);
+            var (products, totalCount) = await _productRepository.GetPagedAsync(page, pageSize, searchTerm, categoryId, minPrice, maxPrice, inStock);
 
             var productDtos = products.Select(p => new ProductDto
             {

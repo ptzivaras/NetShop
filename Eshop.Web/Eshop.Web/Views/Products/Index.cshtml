@@ -19,25 +19,45 @@
     </div>
 
     <!-- Search & Filter -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <form asp-action="Index" method="get" class="d-flex">
-                <input type="text" name="q" value="@ViewBag.Query" class="form-control me-2" placeholder="Search products..." />
-                <button type="submit" class="btn btn-outline-primary">Search</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form asp-action="Index" method="get">
-                <select name="categoryId" class="form-select" onchange="this.form.submit()">
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <input type="text" name="q" value="@Model.Query" class="form-control" placeholder="Search products..." />
+            </div>
+            <div class="col-md-2">
+                <select name="categoryId" class="form-select">
                     <option value="">All Categories</option>
                     @foreach (var cat in ViewBag.Categories)
                     {
-                        <option value="@cat.Id" selected="@(ViewBag.CategoryId == cat.Id)">@cat.Name</option>
+                        <option value="@cat.Id" selected="@(Model.CategoryId == cat.Id)">@cat.Name</option>
                     }
                 </select>
-            </form>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group">
+                    <span class="input-group-text">€</span>
+                    <input type="number" name="minPrice" value="@Model.MinPrice" class="form-control" placeholder="Min" min="0" step="0.01" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group">
+                    <span class="input-group-text">€</span>
+                    <input type="number" name="maxPrice" value="@Model.MaxPrice" class="form-control" placeholder="Max" min="0" step="0.01" />
+                </div>
+            </div>
+            <div class="col-md-1">
+                <select name="inStock" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.InStock == true)">In Stock</option>
+                    <option value="false" selected="@(Model.InStock == false)">Out of Stock</option>
+                </select>
+            </div>
+            <div class="col-md-1 d-flex gap-1">
+                <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                <a asp-action="Index" class="btn btn-outline-secondary" title="Clear filters">✕</a>
+            </div>
         </div>
-    </div>
+    </form>
 
     <!-- Products Grid -->
     <div class="row">
@@ -106,7 +126,7 @@
                 @for (int i = 1; i <= Model.TotalPages; i++)
                 {
                     <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@Model.PageSize" asp-route-q="@ViewBag.Query" asp-route-categoryId="@ViewBag.CategoryId">@i</a>
+                        <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@Model.PageSize" asp-route-q="@Model.Query" asp-route-categoryId="@Model.CategoryId" asp-route-minPrice="@Model.MinPrice" asp-route-maxPrice="@Model.MaxPrice" asp-route-inStock="@Model.InStock">@i</a>
                     </li>
                 }
             </ul>

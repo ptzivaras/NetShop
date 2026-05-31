@@ -23,7 +23,7 @@ namespace Eshop.Web.Services
         }
 
         public async Task<ProductsListViewModel> GetProductsPagedAsync(
-            int page, int pageSize, string? q = null, int? categoryId = null)
+            int page, int pageSize, string? q = null, int? categoryId = null, decimal? minPrice = null, decimal? maxPrice = null, bool? inStock = null)
         {
             var req = new RestRequest("products", Method.Get)
                 .AddQueryParameter("page", page)
@@ -31,6 +31,9 @@ namespace Eshop.Web.Services
 
             if (!string.IsNullOrWhiteSpace(q)) req.AddQueryParameter("q", q);
             if (categoryId.HasValue) req.AddQueryParameter("categoryId", categoryId.Value);
+            if (minPrice.HasValue) req.AddQueryParameter("minPrice", minPrice.Value);
+            if (maxPrice.HasValue) req.AddQueryParameter("maxPrice", maxPrice.Value);
+            if (inStock.HasValue) req.AddQueryParameter("inStock", inStock.Value);
 
             var resp = await _client.ExecuteAsync<PagedResult<ProductDto>>(req);
             if (!resp.IsSuccessful || resp.Data is null)
@@ -55,7 +58,10 @@ namespace Eshop.Web.Services
                 TotalPages = resp.Data.TotalPages,
                 TotalCount = resp.Data.TotalCount,
                 Query = q,
-                CategoryId = categoryId
+                CategoryId = categoryId,
+                MinPrice = minPrice,
+                MaxPrice = maxPrice,
+                InStock = inStock
             };
         }
 

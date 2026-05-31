@@ -14,10 +14,13 @@ namespace Eshop.Core.Repositories
         }
 
         public async Task<(IEnumerable<Product> Items, int TotalCount)> GetPagedAsync(
-            int page, 
-            int pageSize, 
-            string? searchTerm = null, 
-            int? categoryId = null)
+            int page,
+            int pageSize,
+            string? searchTerm = null,
+            int? categoryId = null,
+            decimal? minPrice = null,
+            decimal? maxPrice = null,
+            bool? inStock = null)
         {
             var query = _dbSet.AsNoTracking();
 
@@ -27,8 +30,19 @@ namespace Eshop.Core.Repositories
             if (categoryId.HasValue)
                 query = query.Where(p => p.CategoryId == categoryId.Value);
 
+            if (minPrice.HasValue)
+                query = query.Where(p => p.Price >= minPrice.Value);
+
+            if (maxPrice.HasValue)
+                query = query.Where(p => p.Price <= maxPrice.Value);
+
+            if (inStock.HasValue)
+                query = inStock.Value
+                    ? query.Where(p => p.StockQuantity > 0)
+                    : query.Where(p => p.StockQuantity == 0);
+
             var totalCount = await query.CountAsync();
-            
+
             var items = await query
                 .OrderBy(p => p.Id)
                 .Skip(pageSize * (page - 1))
