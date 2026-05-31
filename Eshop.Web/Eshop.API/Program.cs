@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
 
 // Add API Versioning
 builder.Services.AddApiVersioning(options =>
@@ -86,8 +87,17 @@ builder.Services.AddRateLimiter(options =>
     options.OnRejected = async (context, cancellationToken) =>
     {
         context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-        await context.HttpContext.Response.WriteAsync(
-            "Too many requests. Please try again later.", cancellationToken);
+        context.HttpContext.Response.ContentType = "application/problem+json";
+
+        var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+        {
+            Type = "https://httpstatuses.com/429",
+            Title = "Too Many Requests",
+            Status = StatusCodes.Status429TooManyRequests,
+            Detail = "Too many requests. Please try again later."
+        };
+
+        await context.HttpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
     };
 });
 

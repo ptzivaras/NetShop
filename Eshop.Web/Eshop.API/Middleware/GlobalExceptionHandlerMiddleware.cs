@@ -1,5 +1,4 @@
-using System.Net;
-using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Eshop.API.Middleware
 {
@@ -27,21 +26,20 @@ namespace Eshop.API.Middleware
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.ContentType = "application/problem+json";
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-            var response = new
+            var problem = new ProblemDetails
             {
-                statusCode = context.Response.StatusCode,
-                message = "An error occurred while processing your request.",
-                // Never expose sensitive error details to clients in production
-                // detailed = exception.Message // Only enable in Development
+                Type = "https://httpstatuses.com/500",
+                Title = "An unexpected error occurred",
+                Status = StatusCodes.Status500InternalServerError,
+                Detail = "An error occurred while processing your request."
             };
 
-            var jsonResponse = JsonSerializer.Serialize(response);
-            return context.Response.WriteAsync(jsonResponse);
+            await context.Response.WriteAsJsonAsync(problem);
         }
     }
 }
