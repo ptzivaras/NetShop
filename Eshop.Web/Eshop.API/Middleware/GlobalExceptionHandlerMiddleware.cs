@@ -29,16 +29,27 @@ namespace Eshop.API.Middleware
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/problem+json";
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
             var correlationId = context.Items["X-Correlation-Id"]?.ToString();
 
+            var (status, title, detail) = exception switch
+            {
+                ArgumentException ex        => (StatusCodes.Status400BadRequest,      "Bad Request",             ex.Message),
+                InvalidOperationException ex => (StatusCodes.Status400BadRequest,      "Invalid Operation",       ex.Message),
+                KeyNotFoundException ex      => (StatusCodes.Status404NotFound,        "Resource Not Found",      ex.Message),
+                UnauthorizedAccessException  => (StatusCodes.Status403Forbidden,       "Forbidden",               "You do not have permission to perform this action."),
+                NotImplementedException      => (StatusCodes.Status501NotImplemented,  "Not Implemented",         "This feature is not yet implemented."),
+                _                           => (StatusCodes.Status500InternalServerError, "An unexpected error occurred", "An error occurred while processing your request.")
+            };
+
+            context.Response.StatusCode = status;
+
             var problem = new ProblemDetails
             {
-                Type = "https://httpstatuses.com/500",
-                Title = "An unexpected error occurred",
-                Status = StatusCodes.Status500InternalServerError,
-                Detail = "An error occurred while processing your request."
+                Type = $"https://httpstatuses.com/{status}",
+                Title = title,
+                Status = status,
+                Detail = detail
             };
 
             if (correlationId != null)
