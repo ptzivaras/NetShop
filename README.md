@@ -26,7 +26,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 ### 🛒 Shopping Cart
 - Add/Remove/Update product quantities
 - Persistent cart per authenticated user
-- Add to cart functionality (form POST)
+- Add to cart with AJAX (no page reload, toast notification, live badge count)
 - Seamless checkout integration
 
 ### 📑 Orders
@@ -276,34 +276,29 @@ This project uses **two isolated database contexts** for different concerns:
 - [x] **Optimistic Concurrency Control** - Product stock updates with conflict detection
 - [x] **Product Reviews** - Customer rating system (1-5 stars) with CRUD and authorization
 - [x] **Unit Tests** - Service layer testing (CategoryService, ShoppingCartService, StockAlertService)
+- [x] **Consistent Error Responses** - ProblemDetails-style JSON for all errors (incl. rate limiting)
+- [x] **Correlation IDs** - X-Correlation-Id header on every request/response, added to log scope
+- [x] **Structured Logging** - Correlation ID in log scope for per-request tracing
+- [x] **Validation Coverage** - FluentValidation for all request DTOs (added CartItemDto, CreateReviewDto)
+- [x] **Pagination/Filtering Consistency** - Added pagination to GetAllOrders and GetReviewsByProduct
+- [x] **AJAX Cart Updates** - Add to cart without page reload, toast notification, live cart badge
+- [x] **Admin Dashboard** - Stats cards (products, orders, revenue, alerts), monthly chart (Chart.js), recent orders
 
-#### 🚧 High Priority (Security & Core Functionality)
+#### 🚧 Remaining
 - [ ] **API Authentication** - JWT or Shared Cookies (for later if API consumed by mobile/SPA)
-  - Currently: Web MVC consumes API internally (works fine)
+  - Currently: Web MVC consumes API internally via NoOp auth handler (works fine)
   - Future: If React/mobile apps needed, implement JWT tokens
-- [ ] **Consistent Error Responses** - ProblemDetails-style JSON for all errors (incl. rate limiting)
-- [ ] **Exception Mapping** - Map known exception types to correct HTTP status codes
-- [ ] **Correlation IDs** - Request/response header + log scope for tracing
-- [ ] **Structured Logging** - Request/response logging with correlation IDs
-- [ ] **Validation Coverage** - FluentValidation for all request DTOs
-- [ ] **Pagination/Filtering Consistency** - Extend to remaining list endpoints
+- [ ] **Exception Mapping** - Map known domain exception types to correct HTTP status codes
+- [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
 
 #### 📦 Features (Future)
-- [ ] **AJAX Cart Updates** - Add to cart without page reload (JavaScript + Fetch API)
 - [ ] **Product Wishlist** - Save favorite products for later
-- [ ] **Admin Dashboard** - Comprehensive admin panel with:
-  - Sales Analytics: Revenue charts, orders per period, top-selling products
-  - Inventory Overview: Real-time stock levels, low stock report
-  - User Management: View all users, assign/change roles (Admin/Customer)
-  - Order Dashboard: Filter orders by status/date, view order trends
-  - Product Statistics: Total products, products by category, average price with charts
 - [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
 - [ ] **Product Search** - Advanced filters (price range, category, stock status)
-- [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
 - [ ] **UI Animations** - Dynamic transitions and animations for better UX
 - [ ] **User Guide** - End-user documentation (how to use the shop)
 
-#### 🧪 Testing & Quality (Future)
+#### 🧪 Testing & Quality
 - [ ] **Integration Tests** - Fix authentication configuration in TestWebApplicationFactory
   - Currently: 16/17 tests failing with "No authenticationScheme was specified" error
   - Need: TestAuthenticationHandler to mock authentication in test environment
