@@ -31,6 +31,15 @@ namespace Eshop.Web.Controllers
             return View(cart);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Count()
+        {
+            if (!User.Identity?.IsAuthenticated ?? true) return Json(new { count = 0 });
+            var userId = GetUserIdStrict();
+            var cart = await _cartService.GetCartByUserIdAsync(userId);
+            return Json(new { count = cart.TotalItems });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int productId)

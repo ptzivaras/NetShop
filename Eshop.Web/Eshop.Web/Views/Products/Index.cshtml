@@ -69,8 +69,16 @@
                             <small class="text-muted">Stock: @product.StockQuantity</small>
                         </p>
                     </div>
-                    <div class="card-footer bg-transparent">
+                    <div class="card-footer bg-transparent d-flex gap-1 flex-wrap">
                         <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                        @if (product.StockQuantity > 0)
+                        {
+                            <button class="btn btn-sm btn-primary add-to-cart-btn"
+                                    data-product-id="@product.Id"
+                                    data-product-name="@product.Name">
+                                Add to Cart
+                            </button>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-warning">Edit</a>
