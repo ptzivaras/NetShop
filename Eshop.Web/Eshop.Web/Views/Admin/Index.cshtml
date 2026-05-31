@@ -16,7 +16,7 @@
                     </div>
                     <div>
                         <div class="text-muted small">Total Products</div>
-                        <div class="fs-4 fw-semibold">@Model.TotalProducts</div>
+                        <div class="fs-4 fw-semibold stat-number" data-target="@Model.TotalProducts">@Model.TotalProducts</div>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                     </div>
                     <div>
                         <div class="text-muted small">Total Orders</div>
-                        <div class="fs-4 fw-semibold">@Model.TotalOrders</div>
+                        <div class="fs-4 fw-semibold stat-number" data-target="@Model.TotalOrders">@Model.TotalOrders</div>
                         <div class="text-muted small">+@Model.OrdersThisMonth this month</div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                     </div>
                     <div>
                         <div class="text-muted small">Total Revenue</div>
-                        <div class="fs-4 fw-semibold">€@Model.TotalRevenue.ToString("N2")</div>
+                        <div class="fs-4 fw-semibold stat-number" data-target="@Model.TotalRevenue" data-decimal="true" data-prefix="€">€@Model.TotalRevenue.ToString("N2")</div>
                         <div class="text-muted small">€@Model.RevenueThisMonth.ToString("N2") this month</div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     </div>
                     <div>
                         <div class="text-muted small">Low Stock Alerts</div>
-                        <div class="fs-4 fw-semibold">@Model.UnacknowledgedAlerts</div>
+                        <div class="fs-4 fw-semibold stat-number" data-target="@Model.UnacknowledgedAlerts">@Model.UnacknowledgedAlerts</div>
                     </div>
                 </div>
             </div>

@@ -104,7 +104,7 @@
                             <form asp-controller="Wishlist" asp-action="Add" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="productId" value="@product.Id" />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" title="Add to Wishlist">♡</button>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary heart-btn" title="Add to Wishlist"><span>♡</span></button>
                             </form>
                         }
                         @if (User.IsInRole("Admin"))
