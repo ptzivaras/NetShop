@@ -23,6 +23,7 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IStockAlertService, StockAlertService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IWishlistService, WishlistService>();
 builder.Services.AddHttpContextAccessor(); // user profile page
 
 // Identity

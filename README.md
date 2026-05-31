@@ -26,19 +26,24 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 ### 🛒 Shopping Cart
 - Add/Remove/Update product quantities
 - Persistent cart per authenticated user
-- Add to cart with AJAX (no page reload, toast notification, live badge count)
+- **AJAX add to cart** — no page reload, Bootstrap toast notification, live badge count in navbar
 - Seamless checkout integration
 
 ### 📑 Orders
 - Place orders from shopping cart
 - Order confirmation and history tracking
-- Admin dashboard to view and manage all orders
+- Paginated order history per user
 
-### 📑 StockAlert
-- Low stock inventory notifications for admins
-- Displays alert count badge in navbar
+### 📊 Admin Dashboard
+- **Stats cards**: Total products, orders, revenue (+ this month breakdown), low-stock alerts
+- **Monthly chart**: Orders (bar) + Revenue (line) for last 6 months via Chart.js
+- Recent orders list with order ID, date, total
+
+### 📑 Stock Alerts
+- **Automatic detection** via background service — runs every 10 minutes, triggers alerts when stock ≤ 5 units
+- Prevents duplicate alerts (skips products with existing unacknowledged alert)
 - Admin can view, acknowledge, and dismiss alerts
-- TODO: Implement automatic triggers (DB triggers or background job)
+- Alert count badge in navbar (live count from API)
 
 ### ⭐ Product Reviews
 - Customer rating system (1-5 stars) with comments (max 1000 chars)
@@ -283,16 +288,19 @@ This project uses **two isolated database contexts** for different concerns:
 - [x] **Pagination/Filtering Consistency** - Added pagination to GetAllOrders and GetReviewsByProduct
 - [x] **AJAX Cart Updates** - Add to cart without page reload, toast notification, live cart badge
 - [x] **Admin Dashboard** - Stats cards (products, orders, revenue, alerts), monthly chart (Chart.js), recent orders
+- [x] **Exception Mapping** - Domain exceptions mapped to correct HTTP status codes (400/403/404/501/500)
+  - `ArgumentException` → 400, `KeyNotFoundException` → 404, `UnauthorizedAccessException` → 403
+  - All responses in ProblemDetails format with correlationId
+- [x] **Stock Alert Triggers** - Background service (`IHostedService`) runs every 10 minutes
+  - Detects products with stock ≤ 5 units, creates alert only if no existing unacknowledged alert
 
 #### 🚧 Remaining
 - [ ] **API Authentication** - JWT or Shared Cookies (for later if API consumed by mobile/SPA)
   - Currently: Web MVC consumes API internally via NoOp auth handler (works fine)
   - Future: If React/mobile apps needed, implement JWT tokens
-- [ ] **Exception Mapping** - Map known domain exception types to correct HTTP status codes
-- [ ] **Stock Alert Triggers** - Automatic low-stock detection (DB triggers or background job)
 
 #### 📦 Features (Future)
-- [ ] **Product Wishlist** - Save favorite products for later
+- [x] **Product Wishlist** - Save favorite products for later, ♡ button on product cards and details page
 - [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
 - [ ] **Product Search** - Advanced filters (price range, category, stock status)
 - [ ] **UI Animations** - Dynamic transitions and animations for better UX

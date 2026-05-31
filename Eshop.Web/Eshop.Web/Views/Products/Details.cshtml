@@ -53,6 +53,14 @@
                     <button class="btn btn-secondary btn-lg w-100" disabled>Out of Stock</button>
                 }
                 <a asp-action="Index" class="btn btn-outline-secondary">Back to Products</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <form asp-controller="Wishlist" asp-action="Add" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-outline-secondary w-100">♡ Add to Wishlist</button>
+                    </form>
+                }
                 @if (User.IsInRole("Admin"))
                 {
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Product</a>

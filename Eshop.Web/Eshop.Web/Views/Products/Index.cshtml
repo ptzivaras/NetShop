@@ -79,6 +79,14 @@
                                 Add to Cart
                             </button>
                         }
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <form asp-controller="Wishlist" asp-action="Add" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="productId" value="@product.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" title="Add to Wishlist">♡</button>
+                            </form>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-warning">Edit</a>
