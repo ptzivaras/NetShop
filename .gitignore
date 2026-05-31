@@ -382,3 +382,5 @@ docs/
 # IDE specific
 .vscode/
 .idea/
+# Claude Code config
+.claude/
