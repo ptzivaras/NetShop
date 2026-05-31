@@ -323,5 +323,5 @@ This project uses **two isolated database contexts** for different concerns:
 
 ## 📚 Documentation
 Document everything, maybe i will forget them in the future. I will try to think and add as many concepts as i can  solving real world problems. I will upload Docs when polished.
-Detailed documentation available in [`/docs`](docs/):
+Documentation available in docs folder!!
 ---

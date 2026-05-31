@@ -275,14 +275,17 @@ public class OrderServiceTests
                 OrderItems = new List<OrderItem>()
             }
         };
-        _mockOrderRepository.Setup(r => r.GetAllAsync())
+        _mockOrderRepository.Setup(r => r.GetAllPagedAsync(1, 20))
             .ReturnsAsync(orders);
+        _mockOrderRepository.Setup(r => r.CountAllAsync())
+            .ReturnsAsync(2);
 
         // Act
-        var result = await _orderService.GetAllOrdersAsync();
+        var (result, total) = await _orderService.GetAllOrdersAsync(1, 20);
 
         // Assert
         result.Should().HaveCount(2);
+        total.Should().Be(2);
         result.First().Id.Should().Be(1);
         result.Last().Id.Should().Be(2);
     }

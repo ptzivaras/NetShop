@@ -27,7 +27,7 @@ public class ProductServiceTests
             new() { Id = 1, Name = "Product 1", Price = 10, StockQuantity = 5, CategoryId = 1 },
             new() { Id = 2, Name = "Product 2", Price = 20, StockQuantity = 10, CategoryId = 1 }
         };
-        _mockProductRepository.Setup(r => r.GetPagedAsync(1, 10, null, null))
+        _mockProductRepository.Setup(r => r.GetPagedAsync(1, 10, null, null, null, null, null))
             .ReturnsAsync((products, 2));
 
         // Act
@@ -50,7 +50,7 @@ public class ProductServiceTests
         int inputPage, int inputPageSize, int expectedPage, int expectedPageSize)
     {
         // Arrange
-        _mockProductRepository.Setup(r => r.GetPagedAsync(It.IsAny<int>(), It.IsAny<int>(), null, null))
+        _mockProductRepository.Setup(r => r.GetPagedAsync(It.IsAny<int>(), It.IsAny<int>(), null, null, null, null, null))
             .ReturnsAsync((new List<Product>(), 0));
 
         // Act
@@ -69,7 +69,7 @@ public class ProductServiceTests
         {
             new() { Id = 1, Name = "Laptop", Price = 1000, StockQuantity = 3, CategoryId = 1 }
         };
-        _mockProductRepository.Setup(r => r.GetPagedAsync(1, 10, "Laptop", null))
+        _mockProductRepository.Setup(r => r.GetPagedAsync(1, 10, "Laptop", null, null, null, null))
             .ReturnsAsync((filteredProducts, 1));
 
         // Act
@@ -90,7 +90,7 @@ public class ProductServiceTests
             new() { Id = 1, Name = "Product 1", Price = 10, StockQuantity = 5, CategoryId = 2 },
             new() { Id = 2, Name = "Product 2", Price = 20, StockQuantity = 10, CategoryId = 2 }
         };
-        _mockProductRepository.Setup(r => r.GetPagedAsync(1, 10, null, 2))
+        _mockProductRepository.Setup(r => r.GetPagedAsync(1, 10, null, 2, null, null, null))
             .ReturnsAsync((categoryProducts, 2));
 
         // Act
