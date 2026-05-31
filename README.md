@@ -20,7 +20,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 ### 📦 Product & Category Management (Admin Only)
 - Full CRUD operations for Products and Categories
 - Product image upload and storage (BLOB in database)
-- Pagination and search/filtering
+- Pagination with advanced search & filters: text search, category, **price range**, **stock status**
 - Category-based product browsing
 
 ### 🛒 Shopping Cart
@@ -56,6 +56,12 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - Personal order history with pagination
 - Order details and status tracking
 
+### ♡ Product Wishlist
+- Authenticated users can save products to a personal wishlist
+- ♡ button on every product card and details page
+- Dedicated `/Wishlist` page with all saved products and remove option
+- Stored in database per user (persists across sessions)
+
 ### 🌍 Localization
 - Multi-language support: English (default) & Greek
 - Cookie-based language preference
@@ -66,8 +72,8 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - Toast notifications for user actions
 - Role-based UI elements (Admin sees Edit/Delete, Customers see Add to Cart)
 - Pagination with page size control
-- Search and filter functionality
 - Image upload with preview (JPEG format for optimal storage)
+- **UI Animations**: page fade-in on load, card hover lift, button press scale, navbar scroll shadow, cart badge bounce, stat count-up on Admin Dashboard
 
 ### 🔒 Security & Performance 
 
@@ -90,9 +96,10 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 - **Rate Limiting** ✅ - Global rate limiter: 100 requests/minute per user/IP to prevent DDoS attacks
   - Built-in ASP.NET Core 8 `AddRateLimiter()` middleware
   - Custom rejection messages for throttled requests
-- **IDOR Vulnerability Fixed(Temporarily)** ✅ - Authorization checks on user-scoped endpoints (OrdersController, ShoppingCartController)
+- **IDOR Protection (Temporary Fix)** ✅ - Authorization checks on user-scoped endpoints (OrdersController, ShoppingCartController)
   - Validates `currentUserId == userId` or `User.IsInRole("Admin")` before data access
   - Prevents unauthorized access to other users' orders/carts
+  - **Note:** Currently the API uses a NoOp auth handler for internal Web→API calls. Without JWT, direct API access (Postman/curl) bypasses Identity. Full fix requires JWT — see TODO.
 - **Admin-Only Endpoints** ✅ - Write operations protected with `[Authorize(Roles = "Admin")]`
   - Products: Create, Update, Delete, Image Upload
   - Categories: Create, Update, Delete
@@ -112,13 +119,12 @@ A full-stack **E-commerce Web Application** built with modern technologies:
   - Protects against information leakage attacks
 - **Repository Pattern** ✅ - Abstraction layer between controllers and database
   - Generic `IRepository<T>` base with CRUD operations
-  - 5 domain-specific repositories: Product, Category, Order, ShoppingCart, StockAlert
+  - Domain-specific repositories for every entity (Product, Category, Order, ShoppingCart, StockAlert, Review, Wishlist)
   - Improves testability with mockable data access
   - Centralizes data access logic for easier security audits
 - **Service Layer** ✅ - Business logic extracted from controllers to service classes
-  - 5 services with clear single responsibilities
+  - Services for every domain (Order, Product, Category, ShoppingCart, StockAlert, Review, Wishlist)
   - OrderService handles complex transaction logic (cart → order → stock update)
-  - Controllers reduced by 42% (793 → 461 lines)
   - Clean architecture: Controller → Service → Repository → DbContext
 
 **Performance Optimizations:**
@@ -152,9 +158,10 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 
 **Testing:**
 - **xUnit** - Unit testing framework
-- **Moq 4.20.72** - Mocking library for repository isolation
-- **FluentAssertions 8.8.0** - Readable test assertions
-- **Microsoft.AspNetCore.Mvc.Testing** - Integration testing with TestServer
+- **Moq** - Mocking library for repository isolation in unit tests
+- **FluentAssertions** - Readable test assertions
+- **Microsoft.AspNetCore.Mvc.Testing** - Integration testing with in-process TestServer
+- **SQLite (in-memory)** - Lightweight test database for integration tests
 
 **Frontend:**
 - **Razor Views** - Server-side rendering
@@ -204,7 +211,7 @@ A full-stack **E-commerce Web Application** built with modern technologies:
 ### Layer Responsibilities:
 
 **🔷 Eshop.Core** (Domain/Data Layer)
-- Domain entities: `Product`, `Category`, `Order`, `OrderItem`, `ShoppingCart`
+- Domain entities: `Product`, `Category`, `Order`, `OrderItem`, `ShoppingCart`, `CartItem`, `StockAlert`, `Review`, `WishlistItem`
 - `ApplicationDbContext` for business data
 - Database migrations for business schema
 - Shared across API and referenced by Web
@@ -237,7 +244,7 @@ This project uses **two isolated database contexts** for different concerns:
 #### 1. **ApplicationDbContext** (`Eshop.Core/Data/`)
 - **Purpose:** Business domain data
 - **Database:** `EshopDb`
-- **Contains:** Products, Categories, Orders, OrderItems, ShoppingCarts
+- **Contains:** Products, Categories, Orders, OrderItems, ShoppingCarts, CartItems, StockAlerts, Reviews, WishlistItems
 - **Used by:** API (direct access), Web (via API calls)
 
 #### 2. **AppIdentityDbContext** (`Eshop.Web/Data/`)
@@ -280,7 +287,7 @@ This project uses **two isolated database contexts** for different concerns:
 - [x] **API Versioning** - All API endpoints versioned at v1.0
 - [x] **Optimistic Concurrency Control** - Product stock updates with conflict detection
 - [x] **Product Reviews** - Customer rating system (1-5 stars) with CRUD and authorization
-- [x] **Unit Tests** - Service layer testing (CategoryService, ShoppingCartService, StockAlertService)
+- [x] **Unit Tests** - Service layer unit tests with mocked repositories (all domain services covered)
 - [x] **Consistent Error Responses** - ProblemDetails-style JSON for all errors (incl. rate limiting)
 - [x] **Correlation IDs** - X-Correlation-Id header on every request/response, added to log scope
 - [x] **Structured Logging** - Correlation ID in log scope for per-request tracing
@@ -294,22 +301,22 @@ This project uses **two isolated database contexts** for different concerns:
 - [x] **Stock Alert Triggers** - Background service (`IHostedService`) runs every 10 minutes
   - Detects products with stock ≤ 5 units, creates alert only if no existing unacknowledged alert
 
+- [x] **Product Wishlist** - ♡ button on product cards and details page, dedicated `/Wishlist` page
+- [x] **Product Search** - Advanced filters: price range (min/max), stock status, text + category
+- [x] **UI Animations** - Card hover lift, page fade-in, navbar scroll shadow, badge bounce, count-up
+- [x] **Integration Tests** - TestWebApplicationFactory with SQLite in-memory DB and TestAuthenticationHandler
+  - All API endpoints tested: routing, authorization (401 for unauthenticated), pagination, filtering
+
 #### 🚧 Remaining
-- [ ] **API Authentication** - JWT or Shared Cookies (for later if API consumed by mobile/SPA)
-  - Currently: Web MVC consumes API internally via NoOp auth handler (works fine)
-  - Future: If React/mobile apps needed, implement JWT tokens
+- [ ] **JWT Authentication** — Required to fully secure direct API access (Postman/curl/mobile)
+  - **Current state:** API uses a NoOp auth handler for internal Web→API calls. ASP.NET Identity protects end-users via the Web layer, but the API itself has no real authentication scheme.
+  - **Why it matters:** Without JWT, anyone who finds the API URL can call it directly without authentication. The IDOR checks in controllers are the only line of defense.
+  - **When to implement:** If the API is ever exposed externally (mobile app, React SPA, public docs).
 
 #### 📦 Features (Future)
-- [x] **Product Wishlist** - Save favorite products for later, ♡ button on product cards and details page
 - [ ] **Payment Integration** - Stripe/PayPal gateway for checkout
-- [ ] **Product Search** - Advanced filters (price range, category, stock status)
-- [ ] **UI Animations** - Dynamic transitions and animations for better UX
-- [ ] **User Guide** - End-user documentation (how to use the shop)
 
 #### 🧪 Testing & Quality
-- [ ] **Integration Tests** - Fix authentication configuration in TestWebApplicationFactory
-  - Currently: 16/17 tests failing with "No authenticationScheme was specified" error
-  - Need: TestAuthenticationHandler to mock authentication in test environment
 - [ ] **Load Testing** - k6 or Apache JMeter for performance benchmarks
 
 #### 🚀 DevOps & Deployment (Future - Keep for end)
