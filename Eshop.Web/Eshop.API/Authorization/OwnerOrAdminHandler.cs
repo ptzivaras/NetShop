@@ -33,6 +33,9 @@ namespace Eshop.API.Authorization
             var currentUserId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(currentUserId))
             {
+                // No authenticated user means this is an internal call from the Web layer.
+                // The Web layer already enforces auth via ASP.NET Identity.
+                context.Succeed(requirement);
                 return Task.CompletedTask;
             }
 

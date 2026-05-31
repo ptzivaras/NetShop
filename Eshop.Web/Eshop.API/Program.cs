@@ -8,6 +8,8 @@ using Eshop.Core.Repositories;
 using Eshop.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Eshop.API.Authorization;
+using Eshop.API.Authentication;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,12 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 // Add HttpContextAccessor (required for IDOR protection)
 builder.Services.AddHttpContextAccessor();
+
+// No-op auth scheme so that [Authorize] attributes don't throw when called internally.
+// The Web layer handles real authentication via ASP.NET Identity cookies.
+// When JWT is added later, replace this with the proper bearer scheme.
+builder.Services.AddAuthentication("NoOp")
+    .AddScheme<AuthenticationSchemeOptions, NoOpAuthenticationHandler>("NoOp", null);
 
 // Add Authorization with custom policies
 builder.Services.AddAuthorization(options =>

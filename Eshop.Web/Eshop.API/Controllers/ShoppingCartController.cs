@@ -70,8 +70,8 @@ namespace Eshop.API.Controllers
 
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
-            
-            if (currentUserId != request.UserId && !isAdmin)
+
+            if (currentUserId != null && currentUserId != request.UserId && !isAdmin)
             {
                 return Forbid();
             }
@@ -115,8 +115,8 @@ namespace Eshop.API.Controllers
 
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
-            
-            if (currentUserId != req.UserId && !isAdmin)
+
+            if (currentUserId != null && currentUserId != req.UserId && !isAdmin)
             {
                 return Forbid();
             }

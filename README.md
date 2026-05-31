@@ -281,6 +281,12 @@ This project uses **two isolated database contexts** for different concerns:
 - [ ] **API Authentication** - JWT or Shared Cookies (for later if API consumed by mobile/SPA)
   - Currently: Web MVC consumes API internally (works fine)
   - Future: If React/mobile apps needed, implement JWT tokens
+- [ ] **Consistent Error Responses** - ProblemDetails-style JSON for all errors (incl. rate limiting)
+- [ ] **Exception Mapping** - Map known exception types to correct HTTP status codes
+- [ ] **Correlation IDs** - Request/response header + log scope for tracing
+- [ ] **Structured Logging** - Request/response logging with correlation IDs
+- [ ] **Validation Coverage** - FluentValidation for all request DTOs
+- [ ] **Pagination/Filtering Consistency** - Extend to remaining list endpoints
 
 #### 📦 Features (Future)
 - [ ] **AJAX Cart Updates** - Add to cart without page reload (JavaScript + Fetch API)
