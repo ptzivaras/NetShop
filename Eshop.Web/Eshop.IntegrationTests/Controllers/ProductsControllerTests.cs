@@ -14,6 +14,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
 
     public ProductsControllerTests(TestWebApplicationFactory factory)
     {
+        factory.SeedTestData();
         _client = factory.CreateClient();
         _jsonOptions = new JsonSerializerOptions
         {
@@ -25,7 +26,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProducts_ReturnsPagedProducts()
     {
         // Act
-        var response = await _client.GetAsync("/api/products?page=1&pageSize=10");
+        var response = await _client.GetAsync("/api/v1/products?page=1&pageSize=10");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -43,7 +44,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProducts_WithSearchTerm_FiltersResults()
     {
         // Act
-        var response = await _client.GetAsync("/api/products?page=1&pageSize=10&q=Laptop");
+        var response = await _client.GetAsync("/api/v1/products?page=1&pageSize=10&q=Laptop");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -59,7 +60,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProducts_WithCategoryFilter_ReturnsFilteredProducts()
     {
         // Act
-        var response = await _client.GetAsync("/api/products?page=1&pageSize=10&categoryId=1");
+        var response = await _client.GetAsync("/api/v1/products?page=1&pageSize=10&categoryId=1");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -74,7 +75,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProducts_WithInvalidPageNumber_UsesDefaultValue()
     {
         // Act - page=0 should default to 1
-        var response = await _client.GetAsync("/api/products?page=0&pageSize=10");
+        var response = await _client.GetAsync("/api/v1/products?page=0&pageSize=10");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -90,7 +91,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProducts_WithInvalidPageSize_UsesDefaultValue()
     {
         // Act - pageSize=200 should default to 11
-        var response = await _client.GetAsync("/api/products?page=1&pageSize=200");
+        var response = await _client.GetAsync("/api/v1/products?page=1&pageSize=200");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -119,7 +120,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
         // In a real scenario, you would create the product first or use a known seeded ID
         
         // Act
-        var response = await _client.GetAsync("/api/products/1");
+        var response = await _client.GetAsync("/api/v1/products/1");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -135,7 +136,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProduct_WithNonExistingId_ReturnsNotFound()
     {
         // Act
-        var response = await _client.GetAsync("/api/products/999999");
+        var response = await _client.GetAsync("/api/v1/products/999999");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -155,7 +156,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/products", newProduct);
+        var response = await _client.PostAsJsonAsync("/api/v1/products", newProduct);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -176,7 +177,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
         };
 
         // Act
-        var response = await _client.PutAsJsonAsync("/api/products/1", updateDto);
+        var response = await _client.PutAsJsonAsync("/api/v1/products/1", updateDto);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -197,7 +198,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
         };
 
         // Act
-        var response = await _client.PutAsJsonAsync("/api/products/1", updateDto);
+        var response = await _client.PutAsJsonAsync("/api/v1/products/1", updateDto);
 
         // Assert
         response.StatusCode.Should().BeOneOf(HttpStatusCode.BadRequest, HttpStatusCode.Unauthorized);
@@ -207,7 +208,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task DeleteProduct_WithoutAuthorization_ReturnsUnauthorized()
     {
         // Act
-        var response = await _client.DeleteAsync("/api/products/1");
+        var response = await _client.DeleteAsync("/api/v1/products/1");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -217,7 +218,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetImage_WithNonExistingProduct_ReturnsNotFound()
     {
         // Act
-        var response = await _client.GetAsync("/api/products/999999/image");
+        var response = await _client.GetAsync("/api/v1/products/999999/image");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -230,7 +231,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProducts_WithDifferentPaginationParams_ReturnsCorrectPageSize(int page, int pageSize)
     {
         // Act
-        var response = await _client.GetAsync($"/api/products?page={page}&pageSize={pageSize}");
+        var response = await _client.GetAsync($"/api/v1/products?page={page}&pageSize={pageSize}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -248,7 +249,7 @@ public class ProductsControllerTests : IClassFixture<TestWebApplicationFactory>
     public async Task GetProducts_ReturnsValidJson()
     {
         // Act
-        var response = await _client.GetAsync("/api/products");
+        var response = await _client.GetAsync("/api/v1/products");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);

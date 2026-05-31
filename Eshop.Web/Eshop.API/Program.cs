@@ -129,7 +129,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsEnvironment("Testing"))
+    app.UseHttpsRedirection();
 app.UseCors("AllowWebApp");
 app.UseRateLimiter(); // Add rate limiting middleware
 app.UseAuthentication();
